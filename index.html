@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МастерДвери - Двери на заказ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <span>МастерДвери</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#portfolio">Портфолио</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <div class="phone">
+                <i class="fas fa-phone"></i>
+                <span>+7 (999) 123-45-67</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Герой-секция -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Элитные двери на заказ</h1>
+            <p>Индивидуальное производство дверей из натурального дерева по вашим размерам и дизайну</p>
+            <button class="btn btn-primary" onclick="openModal()">Бесплатный замер</button>
+        </div>
+        <div class="hero-image">
+            <!-- Здесь будет изображение двери -->
+            <div class="door-placeholder">
+                <i class="fas fa-door-open"></i>
+                <p>Ваша будущая дверь</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>Почему выбирают нас</h2>
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-ruler-combined"></i>
+                    <h3>Точные замеры</h3>
+                    <p>Бесплатный выезд мастера для точных замеров</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-tree"></i>
+                    <h3>Натуральное дерево</h3>
+                    <p>Используем только качественные материалы</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-clock"></i>
+                    <h3>Сроки от 14 дней</h3>
+                    <p>Изготовление и установка в кратчайшие сроки</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-award"></i>
+                    <h3>Гарантия 5 лет</h3>
+                    <p>Даем гарантию на все наши изделия</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2>Наши услуги</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Межкомнатные двери</h3>
+                    <p>Классические, раздвижные, скрытые двери</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Входные двери</h3>
+                    <p>Надежные и безопасные двери для дома и офиса</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>Покраска и отделка</h3>
+                    <p>Любой цвет и фактура по вашему желанию</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Фурнитура</h3>
+                    <p>Подбор и установка ручек, замков, петель</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Портфолио -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <h2>Наши работы</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-img">Дубовая дверь</div>
+                    <p>Дверь из массива дуба</p>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-img">Раздвижная система</div>
+                    <p>Стеклянная раздвижная дверь</p>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-img">Входная дверь</div>
+                    <p>Бронированная входная дверь</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Свяжитесь с нами</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Наши контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Клин, ул. Деревообрабатывающая, 15</p>
+                    <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+                    <p><i class="fas fa-envelope"></i> info@masterdoors.ru</p>
+                    <p><i class="fas fa-clock"></i> Пн-Пт: 9:00-19:00, Сб: 10:00-16:00</p>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <h3>Оставьте заявку</h3>
+                    <input type="text" placeholder="Ваше имя" required>
+                    <input type="tel" placeholder="Ваш телефон" required>
+                    <textarea placeholder="Ваше сообщение" rows="4"></textarea>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-door-closed"></i>
+                    <span>МастерДвери</span>
+                </div>
+                <p>© 2025 Производство дверей на заказ. Все права защищены.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Заказать бесплатный замер</h3>
+            <form id="measureForm">
+                <input type="text" placeholder="Ваше имя" required>
+                <input type="tel" placeholder="Ваш телефон" required>
+                <input type="text" placeholder="Адрес" required>
+                <button type="submit" class="btn btn-primary">Заказать замер</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

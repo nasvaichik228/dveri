@@ -74,3 +74,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Кнопка "Наверх"
+const scrollTopBtn = document.getElementById('scrollTop');
+
+window.addEventListener('scroll', function() {
+    // Показ/скрытие кнопки "Наверх"
+    if (window.scrollY > 500) {
+        scrollTopBtn.classList.add('visible');
+    } else {
+        scrollTopBtn.classList.remove('visible');
+    }
+    
+    // Анимация появления элементов при скролле
+    const animatedElements = document.querySelectorAll('.feature, .service-card, .portfolio-item');
+    
+    animatedElements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.2;
+        
+        if (elementPosition < screenPosition) {
+            element.classList.add('fade-in');
+        }
+    });
+});
+
+// Прокрутка наверх
+scrollTopBtn.addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Добавим анимацию при загрузке для героя
+window.addEventListener('load', function() {
+    const heroContent = document.querySelector('.hero-content');
+    const heroImage = document.querySelector('.hero-image');
+    
+    setTimeout(() => {
+        heroContent.style.opacity = '1';
+        heroContent.style.transform = 'translateY(0)';
+    }, 300);
+    
+    setTimeout(() => {
+        heroImage.style.opacity = '1';
+        heroImage.style.transform = 'translateY(0)';
+    }, 600);
+});

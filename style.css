@@ -687,6 +687,465 @@ h2 {
     background-color: #e6c29a;
 }
 
+/* ==================== */
+/* СТИЛИ ДЛЯ КАТАЛОГА   */
+/* ==================== */
+
+/* Хлебные крошки */
+.breadcrumbs {
+    background: #f5f5f5;
+    padding: 1rem 0;
+    margin-top: 80px;
+}
+
+.dark-theme .breadcrumbs {
+    background: #2c2c2c;
+}
+
+.breadcrumbs .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.breadcrumbs a {
+    color: #8B4513;
+    text-decoration: none;
+}
+
+.dark-theme .breadcrumbs a {
+    color: #d4a574;
+}
+
+.breadcrumbs span {
+    color: #666;
+}
+
+.dark-theme .breadcrumbs span {
+    color: #b0b0b0;
+}
+
+/* Каталог */
+.catalog {
+    padding: 3rem 0;
+}
+
+.catalog-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.dark-theme .catalog-subtitle {
+    color: #b0b0b0;
+}
+
+/* Фильтры */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.dark-theme .filter-btn {
+    background: #2c2c2c;
+    color: #e0e0e0;
+}
+
+.filter-btn:hover {
+    background: #ddd;
+}
+
+.dark-theme .filter-btn:hover {
+    background: #3a3a3a;
+}
+
+.filter-btn.active {
+    background: #8B4513;
+    color: white;
+}
+
+.dark-theme .filter-btn.active {
+    background: #d4a574;
+    color: #121212;
+}
+
+.sort {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort label {
+    font-weight: 500;
+}
+
+.sort select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+}
+
+.dark-theme .sort select {
+    background: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+/* Сетка каталога */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.door-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+.dark-theme .door-card {
+    background: #1e1e1e;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.door-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.dark-theme .door-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+.door-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(45deg, #8B4513, #D2691E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.dark-theme .door-image {
+    background: linear-gradient(45deg, #654321, #8B4513);
+}
+
+.door-content {
+    padding: 1.5rem;
+}
+
+.door-category {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.dark-theme .door-category {
+    background: #2c2c2c;
+    color: #e0e0e0;
+}
+
+.door-category.interior {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.dark-theme .door-category.interior {
+    background: #1b5e20;
+    color: #c8e6c9;
+}
+
+.door-category.entrance {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.dark-theme .door-category.entrance {
+    background: #0d47a1;
+    color: #bbdefb;
+}
+
+.door-category.sliding {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.dark-theme .door-category.sliding {
+    background: #4a148c;
+    color: #e1bee7;
+}
+
+.door-category.glass {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.dark-theme .door-category.glass {
+    background: #e65100;
+    color: #ffe0b2;
+}
+
+.door-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.dark-theme .door-title {
+    color: #ffffff;
+}
+
+.door-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    min-height: 60px;
+}
+
+.dark-theme .door-description {
+    color: #b0b0b0;
+}
+
+.door-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #8B4513;
+    margin-bottom: 1rem;
+}
+
+.dark-theme .door-price {
+    color: #d4a574;
+}
+
+.door-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-outline {
+    padding: 8px 16px;
+    background: transparent;
+    border: 2px solid #8B4513;
+    color: #8B4513;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+}
+
+.dark-theme .btn-outline {
+    border-color: #d4a574;
+    color: #d4a574;
+}
+
+.btn-outline:hover {
+    background: #8B4513;
+    color: white;
+}
+
+.dark-theme .btn-outline:hover {
+    background: #d4a574;
+    color: #121212;
+}
+
+/* Информационный блок каталога */
+.catalog-info {
+    text-align: center;
+    padding: 3rem;
+    background: #f9f9f9;
+    border-radius: 10px;
+    margin: 3rem 0;
+}
+
+.dark-theme .catalog-info {
+    background: #2c2c2c;
+}
+
+.catalog-info h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.dark-theme .catalog-info h3 {
+    color: #ffffff;
+}
+
+.catalog-info p {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #666;
+}
+
+.dark-theme .catalog-info p {
+    color: #b0b0b0;
+}
+
+/* Преимущества в каталоге */
+.catalog-benefits {
+    background: linear-gradient(135deg, #f5f1eb 0%, #e8dfd3 100%);
+    padding: 3rem 0;
+}
+
+.dark-theme .catalog-benefits {
+    background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.benefit {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.dark-theme .benefit {
+    background: #1e1e1e;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.benefit i {
+    font-size: 2.5rem;
+    color: #8B4513;
+    margin-bottom: 1rem;
+}
+
+.dark-theme .benefit i {
+    color: #d4a574;
+}
+
+.benefit h3 {
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.dark-theme .benefit h3 {
+    color: #ffffff;
+}
+
+/* Модальное окно товара */
+.product-modal .modal-content {
+    max-width: 900px;
+}
+
+.product-modal-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.product-image {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(45deg, #8B4513, #D2691E);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+}
+
+.dark-theme .product-image {
+    background: linear-gradient(45deg, #654321, #8B4513);
+}
+
+.product-details h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.dark-theme .product-details h3 {
+    color: #ffffff;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #8B4513;
+    margin: 1rem 0;
+}
+
+.dark-theme .product-price {
+    color: #d4a574;
+}
+
+.product-features {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.product-features li {
+    padding: 5px 0;
+    color: #666;
+}
+
+.dark-theme .product-features li {
+    color: #b0b0b0;
+}
+
+.product-features i {
+    color: #8B4513;
+    margin-right: 10px;
+}
+
+.dark-theme .product-features i {
+    color: #d4a574;
+}
+
+/* Активная ссылка в меню */
+.nav-links a.active {
+    color: #8B4513;
+    font-weight: 600;
+}
+
+.dark-theme .nav-links a.active {
+    color: #d4a574;
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
     .nav {
@@ -724,5 +1183,19 @@ h2 {
         grid-template-columns: 1fr;
         gap: 2rem;
         padding: 2rem;
+    }
+    
+    /* Адаптивность для каталога */
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .product-modal-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
     }
 }

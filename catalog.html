@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог дверей | МастерДвери</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-door-closed"></i>
+                    <span>МастерДвери</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Главная</a></li>
+                <li><a href="index.html#about">О нас</a></li>
+                <li><a href="catalog.html" class="active">Каталог</a></li>
+                <li><a href="index.html#services">Услуги</a></li>
+                <li><a href="index.html#portfolio">Портфолио</a></li>
+                <li><a href="index.html#contact">Контакты</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="theme-switcher">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </div>
+                <div class="phone">
+                    <i class="fas fa-phone"></i>
+                    <span>+7 (999) 123-45-67</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Хлебные крошки -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a href="index.html">Главная</a> / <span>Каталог дверей</span>
+        </div>
+    </div>
+
+    <!-- Каталог -->
+    <section class="catalog">
+        <div class="container">
+            <h1>Каталог дверей</h1>
+            <p class="catalog-subtitle">Выберите дверь своей мечты из нашей коллекции</p>
+            
+            <!-- Фильтры -->
+            <div class="filters">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all">Все двери</button>
+                    <button class="filter-btn" data-filter="interior">Межкомнатные</button>
+                    <button class="filter-btn" data-filter="entrance">Входные</button>
+                    <button class="filter-btn" data-filter="sliding">Раздвижные</button>
+                    <button class="filter-btn" data-filter="glass">Стеклянные</button>
+                </div>
+                <div class="sort">
+                    <label for="sort">Сортировка:</label>
+                    <select id="sort">
+                        <option value="popular">По популярности</option>
+                        <option value="price-low">Сначала дешевле</option>
+                        <option value="price-high">Сначала дороже</option>
+                        <option value="new">Новинки</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Карточки товаров -->
+            <div class="catalog-grid" id="doorsGrid">
+                <!-- Карточки будут загружены через JavaScript -->
+            </div>
+
+            <!-- Информационный блок -->
+            <div class="catalog-info">
+                <h3>Не нашли подходящую дверь?</h3>
+                <p>Мы можем изготовить дверь по вашему индивидуальному проекту! Свяжитесь с нами для обсуждения деталей.</p>
+                <a href="index.html#contact" class="btn btn-primary">Заказать консультацию</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок преимуществ -->
+    <section class="catalog-benefits">
+        <div class="container">
+            <h2>Почему заказывают у нас</h2>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <i class="fas fa-truck"></i>
+                    <h3>Бесплатная доставка</h3>
+                    <p>По Москве и области</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-cog"></i>
+                    <h3>Бесплатная установка</h3>
+                    <p>При заказе от 50 000 ₽</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Гарантия 5 лет</h3>
+                    <p>На все изделия и работы</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-paint-roller"></i>
+                    <h3>Любой цвет</h3>
+                    <p>Бесплатная покраска в любой цвет</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-door-closed"></i>
+                    <span>МастерДвери</span>
+                </div>
+                <p>© 2023 Производство дверей на заказ. Все права защищены.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Модальное окно товара -->
+    <div class="modal product-modal" id="productModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProductModal()">&times;</span>
+            <div class="product-modal-content" id="productModalContent">
+                <!-- Контент будет загружен через JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="catalog.js"></script>
+</body>
+</html>

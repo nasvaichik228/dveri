@@ -1,3 +1,16 @@
+// Проверяем, находимся ли мы на странице каталога
+const isCatalogPage = window.location.pathname.includes('catalog.html');
+
+// Функции для модального окна (только для главной страницы)
+if (!isCatalogPage) {
+    window.openModal = function() {
+        document.getElementById('modal').style.display = 'flex';
+    };
+
+    window.closeModal = function() {
+        document.getElementById('modal').style.display = 'none';
+    };
+}
 // Открытие модального окна
 function openModal() {
     document.getElementById('modal').style.display = 'flex';

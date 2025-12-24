@@ -122,3 +122,40 @@ window.addEventListener('load', function() {
         heroImage.style.transform = 'translateY(0)';
     }, 600);
 });
+
+// Тёмная тема
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+// Проверяем сохранённую тему
+if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-theme');
+}
+
+// Переключение темы
+themeToggle.addEventListener('click', function() {
+    body.classList.toggle('dark-theme');
+    
+    // Сохраняем выбор пользователя
+    if (body.classList.contains('dark-theme')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+// Проверяем системные настройки (опционально)
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme')) {
+    body.classList.add('dark-theme');
+}
+
+// Слушаем изменения системной темы
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) {
+        if (e.matches) {
+            body.classList.add('dark-theme');
+        } else {
+            body.classList.remove('dark-theme');
+        }
+    }
+});

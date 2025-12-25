@@ -244,6 +244,11 @@ function orderDoor(doorId) {
 
 // Инициализация каталога при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем сохранённую тему
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+    
     // Рендерим каталог
     renderCatalog();
     
@@ -287,6 +292,21 @@ document.addEventListener('DOMContentLoaded', function() {
             link.classList.add('active');
         }
     });
+    
+    // Назначаем обработчик для переключателя темы
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            
+            // Сохраняем выбор пользователя
+            if (document.body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    }
 });
 
 // Экспортируем функции для использования в консоли

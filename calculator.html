@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор стоимости двери | МастерДвери</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-door-closed"></i>
+                    <span>МастерДвери</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Главная</a></li>
+                <li><a href="index.html#about">О нас</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="calculator.html" class="active">Калькулятор</a></li>
+                <li><a href="index.html#portfolio">Портфолио</a></li>
+                <li><a href="index.html#contact">Контакты</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="theme-switcher">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </div>
+                <div class="phone">
+                    <i class="fas fa-phone"></i>
+                    <span>+7 (999) 123-45-67</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Хлебные крошки -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a href="index.html">Главная</a> / <span>Калькулятор стоимости</span>
+        </div>
+    </div>
+
+    <!-- Калькулятор -->
+    <section class="calculator">
+        <div class="container">
+            <h1>Калькулятор стоимости двери</h1>
+            <p class="calculator-subtitle">Рассчитайте приблизительную стоимость двери по вашим параметрам</p>
+            
+            <div class="calculator-wrapper">
+                <div class="calculator-form">
+                    <!-- Тип двери -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-door-closed"></i> Тип двери</h3>
+                        <div class="options-grid">
+                            <label class="option-card">
+                                <input type="radio" name="doorType" value="interior" checked>
+                                <div class="option-content">
+                                    <i class="fas fa-home"></i>
+                                    <span>Межкомнатная</span>
+                                    <small>от 15 000 ₽</small>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="doorType" value="entrance">
+                                <div class="option-content">
+                                    <i class="fas fa-building"></i>
+                                    <span>Входная</span>
+                                    <small>от 35 000 ₽</small>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="doorType" value="sliding">
+                                <div class="option-content">
+                                    <i class="fas fa-arrows-alt-h"></i>
+                                    <span>Раздвижная</span>
+                                    <small>от 25 000 ₽</small>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="doorType" value="glass">
+                                <div class="option-content">
+                                    <i class="fas fa-glass-whiskey"></i>
+                                    <span>Стеклянная</span>
+                                    <small>от 30 000 ₽</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Материал -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-tree"></i> Материал</h3>
+                        <div class="options-grid">
+                            <label class="option-card">
+                                <input type="radio" name="material" value="pine" checked>
+                                <div class="option-content">
+                                    <span>Сосна</span>
+                                    <small>Эконом вариант</small>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="material" value="oak">
+                                <div class="option-content">
+                                    <span>Дуб</span>
+                                    <small>Премиум класс</small>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="material" value="mdf">
+                                <div class="option-content">
+                                    <span>МДФ</span>
+                                    <small>Бюджетный вариант</small>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="material" value="steel">
+                                <div class="option-content">
+                                    <span>Сталь</span>
+                                    <small>Для входных дверей</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Размеры -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-ruler-combined"></i> Размеры (мм)</h3>
+                        <div class="size-inputs">
+                            <div class="input-group">
+                                <label>Высота</label>
+                                <input type="number" id="height" value="2000" min="1800" max="2500" step="10">
+                                <span>мм</span>
+                            </div>
+                            <div class="input-group">
+                                <label>Ширина</label>
+                                <input type="number" id="width" value="800" min="600" max="1200" step="10">
+                                <span>мм</span>
+                            </div>
+                            <div class="input-group">
+                                <label>Толщина</label>
+                                <input type="number" id="thickness" value="40" min="20" max="100" step="5">
+                                <span>мм</span>
+                            </div>
+                        </div>
+                        <div class="size-presets">
+                            <button type="button" class="size-preset" data-height="2000" data-width="800">Стандарт (2000×800)</button>
+                            <button type="button" class="size-preset" data-height="2100" data-width="900">Высокая (2100×900)</button>
+                            <button type="button" class="size-preset" data-height="2000" data-width="700">Узкая (2000×700)</button>
+                        </div>
+                    </div>
+
+                    <!-- Дополнительные опции -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-plus-circle"></i> Дополнительные опции</h3>
+                        <div class="options-list">
+                            <label class="option-checkbox">
+                                <input type="checkbox" name="options" value="glass_insert">
+                                <span class="checkmark"></span>
+                                <span class="option-text">Стеклянная вставка</span>
+                                <span class="option-price">+5 000 ₽</span>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" name="options" value="premium_lock">
+                                <span class="checkmark"></span>
+                                <span class="option-text">Премиум замок</span>
+                                <span class="option-price">+3 000 ₽</span>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" name="options" value="soundproof">
+                                <span class="checkmark"></span>
+                                <span class="option-text">Шумоизоляция</span>
+                                <span class="option-price">+4 000 ₽</span>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" name="options" value="thermal">
+                                <span class="checkmark"></span>
+                                <span class="option-text">Теплоизоляция</span>
+                                <span class="option-price">+6 000 ₽</span>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" name="options" value="painting">
+                                <span class="checkmark"></span>
+                                <span class="option-text">Покраска в цвет</span>
+                                <span class="option-price">+7 000 ₽</span>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" name="options" value="installation">
+                                <span class="checkmark"></span>
+                                <span class="option-text">Установка</span>
+                                <span class="option-price">+8 000 ₽</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Боковая панель с результатом -->
+                <div class="calculator-result">
+                    <div class="result-sticky">
+                        <h3><i class="fas fa-calculator"></i> Итоговая стоимость</h3>
+                        
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span>Базовая стоимость:</span>
+                                <span id="basePrice">0 ₽</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Надбавка за размер:</span>
+                                <span id="sizePrice">0 ₽</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Дополнительные опции:</span>
+                                <span id="optionsPrice">0 ₽</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>Итого:</span>
+                                <span id="totalPrice">0 ₽</span>
+                            </div>
+                        </div>
+
+                        <div class="economy-badge">
+                            <i class="fas fa-gift"></i>
+                            <span>Экономия до 15% при заказе от 2 дверей</span>
+                        </div>
+
+                        <button class="btn btn-primary btn-block" id="saveCalculation">
+                            <i class="fas fa-save"></i> Сохранить расчёт
+                        </button>
+                        
+                        <button class="btn btn-secondary btn-block" id="orderCalculation">
+                            <i class="fas fa-shopping-cart"></i> Заказать по этому расчёту
+                        </button>
+
+                        <div class="result-info">
+                            <h4>Что включено в стоимость:</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Изготовление двери</li>
+                                <li><i class="fas fa-check"></i> Стандартная фурнитура</li>
+                                <li><i class="fas fa-check"></i> Гарантия 5 лет</li>
+                                <li><i class="fas fa-check"></i> Доставка по Москве</li>
+                            </ul>
+                        </div>
+
+                        <div class="share-buttons">
+                            <span>Поделиться расчётом:</span>
+                            <div class="share-icons">
+                                <button class="share-btn"><i class="fab fa-vk"></i></button>
+                                <button class="share-btn"><i class="fab fa-telegram"></i></button>
+                                <button class="share-btn"><i class="fab fa-whatsapp"></i></button>
+                                <button class="share-btn" id="copyLink"><i class="fas fa-link"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Примеры расчётов -->
+            <div class="calculation-examples">
+                <h3>Примеры готовых расчётов</h3>
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <h4>Межкомнатная дверь из дуба</h4>
+                        <p>Стандартный размер, стеклянная вставка</p>
+                        <div class="example-price">42 500 ₽</div>
+                        <button class="btn-outline" data-example="1">Применить</button>
+                    </div>
+                    <div class="example-card">
+                        <h4>Входная дверь со сталью</h4>
+                        <p>Усиленная, с теплоизоляцией</p>
+                        <div class="example-price">67 800 ₽</div>
+                        <button class="btn-outline" data-example="2">Применить</button>
+                    </div>
+                    <div class="example-card">
+                        <h4>Раздвижная стеклянная</h4>
+                        <p>С матовым стеклом, премиум фурнитура</p>
+                        <div class="example-price">89 300 ₽</div>
+                        <button class="btn-outline" data-example="3">Применить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-door-closed"></i>
+                    <span>МастерДвери</span>
+                </div>
+                <p>© 2023 Производство дверей на заказ. Все права защищены.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Модальное окно сохранения -->
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSaveModal()">&times;</span>
+            <h3>Сохранить расчёт</h3>
+            <form id="saveForm">
+                <input type="text" placeholder="Ваше имя" required>
+                <input type="email" placeholder="Ваш email" required>
+                <input type="tel" placeholder="Ваш телефон">
+                <textarea placeholder="Комментарий (необязательно)" rows="3"></textarea>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Отправить на email</button>
+                    <button type="button" class="btn-outline" onclick="printCalculation()">
+                        <i class="fas fa-print"></i> Распечатать
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно заказа -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h3>Заказ по расчёту</h3>
+            <div class="order-summary" id="orderSummary">
+                <!-- Содержимое будет заполнено через JS -->
+            </div>
+            <form id="orderForm">
+                <input type="text" placeholder="Ваше имя" required>
+                <input type="tel" placeholder="Ваш телефон" required>
+                <input type="email" placeholder="Ваш email" required>
+                <textarea placeholder="Адрес доставки и установки" required rows="3"></textarea>
+                <button type="submit" class="btn btn-primary">Отправить заявку</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="calculator.js"></script>
+</body>
+</html>

@@ -827,6 +827,7 @@ h2 {
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transition: all 0.3s;
+    position: relative;
 }
 
 .dark-theme .door-card {
@@ -852,10 +853,53 @@ h2 {
     justify-content: center;
     color: white;
     font-size: 1.5rem;
+    position: relative;
 }
 
 .dark-theme .door-image {
     background: linear-gradient(45deg, #654321, #8B4513);
+}
+
+/* Кнопка быстрого просмотра */
+.quick-view-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #8B4513;
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-theme .quick-view-btn {
+    background: rgba(30, 30, 30, 0.9);
+    color: #d4a574;
+}
+
+.door-card:hover .quick-view-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.quick-view-btn:hover {
+    background: #8B4513;
+    color: white;
+}
+
+.dark-theme .quick-view-btn:hover {
+    background: #d4a574;
+    color: #121212;
 }
 
 .door-content {
@@ -1129,6 +1173,117 @@ h2 {
 }
 
 .dark-theme .product-features i {
+    color: #d4a574;
+}
+
+/* Модальное окно быстрого просмотра */
+.quick-view-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.quick-view-content {
+    background: white;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.dark-theme .quick-view-content {
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.close-quick-view {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #666;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.3s;
+}
+
+.dark-theme .close-quick-view {
+    color: #b0b0b0;
+}
+
+.close-quick-view:hover {
+    color: #8B4513;
+}
+
+.dark-theme .close-quick-view:hover {
+    color: #d4a574;
+}
+
+.quick-view-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    .quick-view-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.quick-view-image {
+    height: 300px;
+    background: linear-gradient(45deg, #8B4513, #D2691E);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 4rem;
+}
+
+.dark-theme .quick-view-image {
+    background: linear-gradient(45deg, #654321, #8B4513);
+}
+
+.quick-view-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.quick-view-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #8B4513;
+    margin: 1rem 0;
+}
+
+.dark-theme .quick-view-price {
     color: #d4a574;
 }
 

@@ -111,6 +111,17 @@ function formatPrice(price) {
     return price.toLocaleString('ru-RU') + ' ₽';
 }
 
+// Функция для получения названия категории
+function getCategoryName(category) {
+    const names = {
+        'interior': 'Межкомнатная',
+        'entrance': 'Входная',
+        'sliding': 'Раздвижная',
+        'glass': 'Стеклянная'
+    };
+    return names[category] || category;
+}
+
 // Функция для создания карточки двери
 function createDoorCard(door) {
     const categories = Array.isArray(door.category) ? door.category : [door.category];
@@ -118,7 +129,10 @@ function createDoorCard(door) {
     
     return `
         <div class="door-card" data-category="${categories.join(' ')}" data-id="${door.id}">
-            <div class="door-image">
+            <div class="door-image" style="position: relative;">
+                <button class="quick-view-btn" onclick="quickView(${door.id})" title="Быстрый просмотр">
+                    <i class="fas fa-eye"></i>
+                </button>
                 <i class="fas fa-door-open"></i>
             </div>
             <div class="door-content">
@@ -133,17 +147,6 @@ function createDoorCard(door) {
             </div>
         </div>
     `;
-}
-
-// Функция для получения названия категории
-function getCategoryName(category) {
-    const names = {
-        'interior': 'Межкомнатная',
-        'entrance': 'Входная',
-        'sliding': 'Раздвижная',
-        'glass': 'Стеклянная'
-    };
-    return names[category] || category;
 }
 
 // Функция для отображения каталога
@@ -233,12 +236,63 @@ function closeProductModal() {
     document.getElementById('productModal').style.display = 'none';
 }
 
+// Функция для быстрого просмотра
+function quickView(doorId) {
+    const door = doorsData.find(d => d.id === doorId);
+    if (!door) return;
+    
+    // Создаем модальное окно быстрого просмотра
+    const quickViewModal = document.createElement('div');
+    quickViewModal.className = 'quick-view-modal';
+    quickViewModal.innerHTML = `
+        <div class="quick-view-content">
+            <button class="close-quick-view" onclick="closeQuickView()">&times;</button>
+            <div class="quick-view-grid">
+                <div class="quick-view-image">
+                    <i class="fas fa-door-open"></i>
+                </div>
+                <div class="quick-view-info">
+                    <h3>${door.name}</h3>
+                    <p>${door.description}</p>
+                    <div class="quick-view-price">${formatPrice(door.price)}</div>
+                    <button class="btn btn-primary" onclick="showDoorDetails(${door.id}); closeQuickView()">
+                        Подробнее
+                    </button>
+                    <button class="btn-outline" onclick="orderDoor(${door.id}); closeQuickView()">
+                        Заказать
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(quickViewModal);
+    document.body.style.overflow = 'hidden';
+    
+    // Закрытие по клику вне окна
+    quickViewModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeQuickView();
+        }
+    });
+}
+
+// Функция закрытия быстрого просмотра
+function closeQuickView() {
+    const modal = document.querySelector('.quick-view-modal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = 'auto';
+    }
+}
+
 // Функция для заказа двери
 function orderDoor(doorId) {
     const door = doorsData.find(d => d.id === doorId);
     if (door) {
         alert(`Вы выбрали дверь "${door.name}" по цене ${formatPrice(door.price)}. Мы свяжемся с вами для уточнения деталей заказа.`);
         closeProductModal();
+        closeQuickView();
     }
 }
 
@@ -273,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Закрытие модального окна при клике вне его
+    // Закрытие модальных окон при клике вне их
     const productModal = document.getElementById('productModal');
     if (productModal) {
         productModal.addEventListener('click', function(e) {
@@ -307,9 +361,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Закрытие быстрого просмотра по Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeQuickView();
+        }
+    });
 });
 
 // Экспортируем функции для использования в консоли
 window.showDoorDetails = showDoorDetails;
 window.orderDoor = orderDoor;
 window.closeProductModal = closeProductModal;
+window.quickView = quickView;
+window.closeQuickView = closeQuickView;

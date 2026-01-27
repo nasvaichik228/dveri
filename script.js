@@ -11,26 +11,9 @@ if (!isCatalogPage) {
         document.getElementById('modal').style.display = 'none';
     };
 }
-// Открытие модального окна
-function openModal() {
-    document.getElementById('modal').style.display = 'flex';
-}
-
-// Закрытие модального окна
-function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-}
-
-// Закрытие модального окна при клике вне его
-window.onclick = function(event) {
-    const modal = document.getElementById('modal');
-    if (event.target === modal) {
-        closeModal();
-    }
-}
 
 // Обработка формы заявки на замер
-document.getElementById('measureForm').addEventListener('submit', function(e) {
+document.getElementById('measureForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     alert('Спасибо! Мы свяжемся с вами в ближайшее время для уточнения времени замера.');
     closeModal();
@@ -38,7 +21,7 @@ document.getElementById('measureForm').addEventListener('submit', function(e) {
 });
 
 // Обработка формы контактов
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     alert('Спасибо за ваше сообщение! Мы ответим вам в течение 24 часов.');
     this.reset();
@@ -136,39 +119,41 @@ window.addEventListener('load', function() {
     }, 600);
 });
 
-// Тёмная тема
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
+// Тёмная тема (для главной страницы)
+if (!isCatalogPage) {
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
 
-// Проверяем сохранённую тему
-if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-theme');
-}
-
-// Переключение темы
-themeToggle.addEventListener('click', function() {
-    body.classList.toggle('dark-theme');
-    
-    // Сохраняем выбор пользователя
-    if (body.classList.contains('dark-theme')) {
-        localStorage.setItem('theme', 'dark');
-    } else {
-        localStorage.setItem('theme', 'light');
+    // Проверяем сохранённую тему
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-theme');
     }
-});
 
-// Проверяем системные настройки (опционально)
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme')) {
-    body.classList.add('dark-theme');
-}
-
-// Слушаем изменения системной темы
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (!localStorage.getItem('theme')) {
-        if (e.matches) {
-            body.classList.add('dark-theme');
+    // Переключение темы
+    themeToggle?.addEventListener('click', function() {
+        body.classList.toggle('dark-theme');
+        
+        // Сохраняем выбор пользователя
+        if (body.classList.contains('dark-theme')) {
+            localStorage.setItem('theme', 'dark');
         } else {
-            body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
         }
+    });
+
+    // Проверяем системные настройки (опционально)
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme')) {
+        body.classList.add('dark-theme');
     }
-});
+
+    // Слушаем изменения системной темы
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {
+            if (e.matches) {
+                body.classList.add('dark-theme');
+            } else {
+                body.classList.remove('dark-theme');
+            }
+        }
+    });
+}

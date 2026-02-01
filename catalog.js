@@ -130,6 +130,10 @@ function createDoorCard(door) {
     return `
         <div class="door-card" data-category="${categories.join(' ')}" data-id="${door.id}">
             <div class="door-image" style="position: relative;">
+                <button class="add-to-cart-btn" onclick="addDoorToCart(${door.id})" title="Добавить в корзину">
+                    <i class="fas fa-cart-plus"></i>
+                    Добавить
+                </button>
                 <button class="quick-view-btn" onclick="quickView(${door.id})" title="Быстрый просмотр">
                     <i class="fas fa-eye"></i>
                 </button>
@@ -141,12 +145,24 @@ function createDoorCard(door) {
                 <p class="door-description">${door.description}</p>
                 <div class="door-price">${formatPrice(door.price)}</div>
                 <div class="door-actions">
-                    <button class="btn btn-primary" onclick="showDoorDetails(${door.id})">Подробнее</button>
-                    <button class="btn-outline" onclick="orderDoor(${door.id})">Заказать</button>
+                    <button class="btn btn-primary" onclick="showDoorDetails(${door.id})">
+                        <i class="fas fa-info-circle"></i> Подробнее
+                    </button>
+                    <button class="btn-outline" onclick="addDoorToCart(${door.id})">
+                        <i class="fas fa-cart-plus"></i> В корзину
+                    </button>
                 </div>
             </div>
         </div>
     `;
+}
+
+// Функция для добавления двери в корзину
+function addDoorToCart(doorId) {
+    const door = doorsData.find(d => d.id === doorId);
+    if (door) {
+        addToCart(door);
+    }
 }
 
 // Функция для отображения каталога
@@ -222,7 +238,9 @@ function showDoorDetails(doorId) {
             </ul>
             
             <div class="door-actions" style="margin-top: 2rem;">
-                <button class="btn btn-primary" onclick="orderDoor(${door.id})">Заказать эту дверь</button>
+                <button class="btn btn-primary" onclick="addDoorToCart(${door.id}); closeProductModal()">
+                    <i class="fas fa-cart-plus"></i> Добавить в корзину
+                </button>
                 <button class="btn-outline" onclick="closeProductModal()">Закрыть</button>
             </div>
         </div>
@@ -255,11 +273,11 @@ function quickView(doorId) {
                     <h3>${door.name}</h3>
                     <p>${door.description}</p>
                     <div class="quick-view-price">${formatPrice(door.price)}</div>
-                    <button class="btn btn-primary" onclick="showDoorDetails(${door.id}); closeQuickView()">
-                        Подробнее
+                    <button class="btn btn-primary" onclick="addDoorToCart(${door.id}); closeQuickView()">
+                        <i class="fas fa-cart-plus"></i> В корзину
                     </button>
-                    <button class="btn-outline" onclick="orderDoor(${door.id}); closeQuickView()">
-                        Заказать
+                    <button class="btn-outline" onclick="showDoorDetails(${door.id}); closeQuickView()">
+                        Подробнее
                     </button>
                 </div>
             </div>
@@ -286,7 +304,7 @@ function closeQuickView() {
     }
 }
 
-// Функция для заказа двери
+// Функция для заказа двери (старая версия - можно оставить для обратной совместимости)
 function orderDoor(doorId) {
     const door = doorsData.find(d => d.id === doorId);
     if (door) {
@@ -337,6 +355,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    const cartModal = document.getElementById('cartModal');
+    if (cartModal) {
+        cartModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCartModal();
+            }
+        });
+    }
+    
     // Активируем текущую страницу в меню
     const currentPage = window.location.pathname.split('/').pop();
     const navLinks = document.querySelectorAll('.nav-links a');
@@ -366,6 +393,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeQuickView();
+            closeCartModal();
+            closeProductModal();
         }
     });
 });
@@ -373,6 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Экспортируем функции для использования в консоли
 window.showDoorDetails = showDoorDetails;
 window.orderDoor = orderDoor;
+window.addDoorToCart = addDoorToCart;
 window.closeProductModal = closeProductModal;
 window.quickView = quickView;
 window.closeQuickView = closeQuickView;

@@ -6,6 +6,20 @@ const CART_STORAGE_KEY = 'masterdoors_cart';
 // Инициализация корзины
 let cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
 
+// Функция для анимации иконки корзины
+function animateCartIcon() {
+    const cartIcon = document.getElementById('cartIcon');
+    if (!cartIcon) return;
+    
+    // Добавляем класс анимации
+    cartIcon.classList.add('cart-pulse');
+    
+    // Удаляем класс после завершения анимации
+    setTimeout(() => {
+        cartIcon.classList.remove('cart-pulse');
+    }, 300);
+}
+
 // Функция для обновления счетчика корзины
 function updateCartCount() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -59,6 +73,7 @@ function addToCart(product, quantity = 1) {
     
     saveCart();
     showNotification(`"${product.name}" добавлен в корзину!`);
+    animateCartIcon(); // Добавляем вызов анимации
 }
 
 // Функция для удаления товара из корзины

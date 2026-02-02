@@ -130,7 +130,7 @@ function createDoorCard(door) {
     return `
         <div class="door-card" data-category="${categories.join(' ')}" data-id="${door.id}">
             <div class="door-image" style="position: relative;">
-                <button class="add-to-cart-btn" onclick="addDoorToCart(${door.id})" title="Добавить в корзину">
+                <button class="add-to-cart-btn" onclick="quickAddToCart(${door.id})" title="Добавить в корзину">
                     <i class="fas fa-cart-plus"></i>
                     Добавить
                 </button>
@@ -148,13 +148,37 @@ function createDoorCard(door) {
                     <button class="btn btn-primary" onclick="showDoorDetails(${door.id})">
                         <i class="fas fa-info-circle"></i> Подробнее
                     </button>
-                    <button class="btn-outline" onclick="addDoorToCart(${door.id})">
+                    <button class="btn-outline" onclick="quickAddToCart(${door.id})">
                         <i class="fas fa-cart-plus"></i> В корзину
                     </button>
                 </div>
             </div>
         </div>
     `;
+}
+
+// Функция для быстрого добавления в корзину с подтверждением
+function quickAddToCart(doorId) {
+    const door = doorsData.find(d => d.id === doorId);
+    if (!door) return;
+    
+    // Показываем небольшое подтверждение
+    const card = document.querySelector(`.door-card[data-id="${doorId}"]`);
+    if (card) {
+        const btn = card.querySelector('.add-to-cart-btn');
+        const originalText = btn.innerHTML;
+        
+        btn.innerHTML = '<i class="fas fa-check"></i> Добавлено!';
+        btn.style.background = '#4caf50';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = '';
+        }, 1000);
+    }
+    
+    // Добавляем в корзину
+    addDoorToCart(doorId);
 }
 
 // Функция для добавления двери в корзину
@@ -403,6 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
 window.showDoorDetails = showDoorDetails;
 window.orderDoor = orderDoor;
 window.addDoorToCart = addDoorToCart;
+window.quickAddToCart = quickAddToCart;
 window.closeProductModal = closeProductModal;
 window.quickView = quickView;
 window.closeQuickView = closeQuickView;

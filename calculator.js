@@ -141,6 +141,12 @@ function setupEventListeners() {
     // Формы
     document.getElementById('saveForm').addEventListener('submit', saveCalculation);
     document.getElementById('orderForm').addEventListener('submit', submitOrder);
+    
+    // Кнопка добавления в корзину из калькулятора
+    const addToCartBtn = document.getElementById('addToCartFromCalculator');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', addCalculationToCart);
+    }
 }
 
 // Обновление размеров
@@ -509,6 +515,38 @@ function loadFromUrl() {
     }
 }
 
+// Функция для добавления расчета в корзину
+function addCalculationToCart() {
+    const doorType = calculatorData.doorTypes[currentCalculation.doorType];
+    const material = calculatorData.materials[currentCalculation.material];
+    const totalPrice = getTotalPrice();
+    
+    // Создаем объект продукта для корзины
+    const customDoor = {
+        id: Date.now(), // Уникальный ID на основе времени
+        name: `Дверь ${doorType.name} из ${material.name}`,
+        description: `Индивидуальный заказ: ${doorType.name}, ${material.name}, ${currentCalculation.height}x${currentCalculation.width}x${currentCalculation.thickness}мм`,
+        price: totalPrice,
+        custom: true,
+        calculation: { ...currentCalculation }
+    };
+    
+    // Добавляем информацию о дополнительных опциях
+    if (currentCalculation.selectedOptions.length > 0) {
+        const optionsText = currentCalculation.selectedOptions.map(optionId => {
+            return calculatorData.options[optionId].name;
+        }).join(', ');
+        
+        customDoor.description += `, опции: ${optionsText}`;
+    }
+    
+    // Добавляем в корзину
+    addToCart(customDoor);
+    
+    // Показываем уведомление
+    showNotification('Индивидуальная дверь добавлена в корзину!');
+}
+
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     // Инициализация темы (если есть common.js)
@@ -554,3 +592,4 @@ window.closeSaveModal = closeSaveModal;
 window.openOrderModal = openOrderModal;
 window.closeOrderModal = closeOrderModal;
 window.printCalculation = printCalculation;
+window.addCalculationToCart = addCalculationToCart;

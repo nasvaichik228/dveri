@@ -2453,3 +2453,52 @@ h2 {
 .dark-theme .empty-cart i {
     color: #444;
 }
+/* Анимация для иконки корзины */
+@keyframes cartPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.cart-pulse i {
+    animation: cartPulse 0.3s ease;
+    color: #ff4444;
+}
+
+.dark-theme .cart-pulse i {
+    color: #ff6b6b;
+}
+
+/* Мелкое улучшение: подсветка при наведении на карточку товара */
+.door-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.door-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.dark-theme .door-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* Улучшение для кнопки "Добавить в корзину" в карточке */
+.add-to-cart-btn {
+    transition: all 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background: #A0522D;
+    transform: scale(1.05);
+}
+
+.dark-theme .add-to-cart-btn:hover {
+    background: #e6c29a;
+}

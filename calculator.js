@@ -41,7 +41,8 @@ let currentCalculation = {
     height: 2000,
     width: 800,
     thickness: 40,
-    selectedOptions: []
+    selectedOptions: [],
+    quantity: 1 // Добавляем количество
 };
 
 // Инициализация калькулятора
@@ -64,6 +65,7 @@ function setDefaultValues() {
     document.getElementById('height').value = currentCalculation.height;
     document.getElementById('width').value = currentCalculation.width;
     document.getElementById('thickness').value = currentCalculation.thickness;
+    document.getElementById('doorQuantity').value = currentCalculation.quantity;
 }
 
 // Настройка обработчиков событий
@@ -88,6 +90,15 @@ function setupEventListeners() {
     document.getElementById('height').addEventListener('input', updateSize);
     document.getElementById('width').addEventListener('input', updateSize);
     document.getElementById('thickness').addEventListener('input', updateSize);
+    
+    // Количество дверей
+    document.getElementById('doorQuantity').addEventListener('input', function() {
+        currentCalculation.quantity = parseInt(this.value) || 1;
+        if (currentCalculation.quantity < 1) currentCalculation.quantity = 1;
+        if (currentCalculation.quantity > 10) currentCalculation.quantity = 10;
+        this.value = currentCalculation.quantity;
+        calculatePrice();
+    });
 
     // Предустановленные размеры
     document.querySelectorAll('.size-preset').forEach(button => {
@@ -147,6 +158,23 @@ function setupEventListeners() {
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', addCalculationToCart);
     }
+    
+    // Кнопки управления количеством
+    document.getElementById('decreaseQuantity')?.addEventListener('click', function() {
+        if (currentCalculation.quantity > 1) {
+            currentCalculation.quantity--;
+            document.getElementById('doorQuantity').value = currentCalculation.quantity;
+            calculatePrice();
+        }
+    });
+    
+    document.getElementById('increaseQuantity')?.addEventListener('click', function() {
+        if (currentCalculation.quantity < 10) {
+            currentCalculation.quantity++;
+            document.getElementById('doorQuantity').value = currentCalculation.quantity;
+            calculatePrice();
+        }
+    });
 }
 
 // Обновление размеров
@@ -177,11 +205,25 @@ function calculatePrice() {
         }
     });
     
-    // Итоговая стоимость
-    const totalPrice = basePrice + sizePrice + optionsPrice;
+    // Итоговая стоимость за одну дверь
+    const pricePerDoor = basePrice + sizePrice + optionsPrice;
+    
+    // Общая стоимость с учётом количества
+    const totalPrice = pricePerDoor * currentCalculation.quantity;
+    
+    // Скидка при заказе от 2 дверей
+    let discount = 0;
+    let discountAmount = 0;
+    if (currentCalculation.quantity >= 2) {
+        discount = 15; // 15% скидка
+        discountAmount = totalPrice * discount / 100;
+    }
+    
+    // Цена со скидкой
+    const finalPrice = totalPrice - discountAmount;
     
     // Обновление отображения
-    updatePriceDisplay(basePrice, sizePrice, optionsPrice, totalPrice);
+    updatePriceDisplay(basePrice, sizePrice, optionsPrice, pricePerDoor, totalPrice, discount, discountAmount, finalPrice);
     
     // Сохранение расчёта в localStorage
     saveToLocalStorage();
@@ -209,13 +251,59 @@ function calculateSizeMultiplier() {
 }
 
 // Обновление отображения цен
-function updatePriceDisplay(basePrice, sizePrice, optionsPrice, totalPrice) {
+function updatePriceDisplay(basePrice, sizePrice, optionsPrice, pricePerDoor, totalPrice, discount, discountAmount, finalPrice) {
     const formatPrice = (price) => Math.round(price).toLocaleString('ru-RU') + ' ₽';
     
     document.getElementById('basePrice').textContent = formatPrice(basePrice);
     document.getElementById('sizePrice').textContent = formatPrice(sizePrice);
     document.getElementById('optionsPrice').textContent = formatPrice(optionsPrice);
+    document.getElementById('pricePerDoor').textContent = formatPrice(pricePerDoor);
     document.getElementById('totalPrice').textContent = formatPrice(totalPrice);
+    
+    // Обновляем информацию о скидке
+    const discountElement = document.getElementById('discountInfo');
+    const finalPriceElement = document.getElementById('finalPrice');
+    
+    if (discount > 0) {
+        discountElement.innerHTML = `
+            <div class="discount-badge">
+                <i class="fas fa-tag"></i>
+                <span>Скидка ${discount}% за ${currentCalculation.quantity} дверей: -${formatPrice(discountAmount)}</span>
+            </div>
+        `;
+        discountElement.style.display = 'block';
+        
+        finalPriceElement.innerHTML = `
+            <div class="price-row final-total">
+                <span>Итого со скидкой:</span>
+                <span>${formatPrice(finalPrice)}</span>
+            </div>
+        `;
+        finalPriceElement.style.display = 'block';
+    } else {
+        discountElement.style.display = 'none';
+        finalPriceElement.style.display = 'none';
+    }
+    
+    // Обновляем бейдж экономии
+    const economyBadge = document.querySelector('.economy-badge');
+    if (economyBadge) {
+        if (currentCalculation.quantity >= 2) {
+            economyBadge.innerHTML = `
+                <i class="fas fa-gift"></i>
+                <span>Вы экономите ${formatPrice(discountAmount)} (${discount}%)!</span>
+            `;
+            economyBadge.style.background = '#e8f5e9';
+            economyBadge.style.color = '#2e7d32';
+        } else {
+            economyBadge.innerHTML = `
+                <i class="fas fa-gift"></i>
+                <span>Экономия до 15% при заказе от 2 дверей</span>
+            `;
+            economyBadge.style.background = '';
+            economyBadge.style.color = '';
+        }
+    }
 }
 
 // Сохранение в localStorage
@@ -245,7 +333,8 @@ function loadExample(exampleId) {
             height: 2000,
             width: 800,
             thickness: 40,
-            options: ['glass_insert']
+            options: ['glass_insert'],
+            quantity: 1
         },
         '2': {
             doorType: 'entrance',
@@ -253,7 +342,8 @@ function loadExample(exampleId) {
             height: 2100,
             width: 900,
             thickness: 80,
-            options: ['thermal', 'premium_lock']
+            options: ['thermal', 'premium_lock'],
+            quantity: 1
         },
         '3': {
             doorType: 'glass',
@@ -261,7 +351,8 @@ function loadExample(exampleId) {
             height: 2100,
             width: 1000,
             thickness: 25,
-            options: ['painting', 'soundproof', 'installation']
+            options: ['painting', 'soundproof', 'installation'],
+            quantity: 2 // Пример с 2 дверями для демонстрации скидки
         }
     };
     
@@ -275,6 +366,7 @@ function loadExample(exampleId) {
     document.getElementById('height').value = example.height;
     document.getElementById('width').value = example.width;
     document.getElementById('thickness').value = example.thickness;
+    document.getElementById('doorQuantity').value = example.quantity;
     
     // Сбрасываем все опции
     document.querySelectorAll('input[name="options"]').forEach(checkbox => {
@@ -294,7 +386,8 @@ function loadExample(exampleId) {
         height: example.height,
         width: example.width,
         thickness: example.thickness,
-        selectedOptions: example.options
+        selectedOptions: example.options,
+        quantity: example.quantity
     };
     
     // Пересчитываем
@@ -334,6 +427,15 @@ function generateOrderSummary() {
     const material = calculatorData.materials[currentCalculation.material];
     const totalPrice = getTotalPrice();
     
+    // Рассчитываем скидку
+    let discount = 0;
+    let discountAmount = 0;
+    if (currentCalculation.quantity >= 2) {
+        discount = 15;
+        discountAmount = totalPrice * discount / 100;
+    }
+    const finalPrice = totalPrice - discountAmount;
+    
     let optionsList = '';
     if (currentCalculation.selectedOptions.length > 0) {
         optionsList = '<ul style="margin: 10px 0; padding-left: 20px;">';
@@ -350,11 +452,17 @@ function generateOrderSummary() {
         <h4>Детали заказа:</h4>
         <p><strong>Тип:</strong> ${doorType.name}</p>
         <p><strong>Материал:</strong> ${material.name}</p>
+        <p><strong>Количество:</strong> ${currentCalculation.quantity} шт.</p>
         <p><strong>Размеры:</strong> ${currentCalculation.height}×${currentCalculation.width}×${currentCalculation.thickness} мм</p>
         <p><strong>Дополнительные опции:</strong></p>
         ${optionsList}
+        ${currentCalculation.quantity >= 2 ? `
+            <p style="color: #4caf50; font-weight: bold;">
+                <i class="fas fa-tag"></i> Скидка ${discount}%: -${discountAmount.toLocaleString()} ₽
+            </p>
+        ` : ''}
         <p style="font-size: 1.2rem; font-weight: bold; color: #8B4513; margin-top: 15px;">
-            Итоговая стоимость: ${totalPrice.toLocaleString()} ₽
+            Итоговая стоимость: ${finalPrice.toLocaleString()} ₽
         </p>
     `;
 }
@@ -446,6 +554,7 @@ function printCalculation() {
                     .calculation-details { margin: 20px 0; }
                     .price { font-size: 24px; font-weight: bold; color: #8B4513; margin: 20px 0; }
                     .footer { margin-top: 40px; font-size: 12px; color: #666; }
+                    .discount { color: #4caf50; font-weight: bold; }
                 </style>
             </head>
             <body>
@@ -501,6 +610,11 @@ function loadFromUrl() {
                 currentCalculation.thickness = savedCalculation.thickness;
             }
             
+            if (savedCalculation.quantity) {
+                document.getElementById('doorQuantity').value = savedCalculation.quantity;
+                currentCalculation.quantity = savedCalculation.quantity;
+            }
+            
             if (savedCalculation.selectedOptions) {
                 document.querySelectorAll('input[name="options"]').forEach(checkbox => {
                     checkbox.checked = savedCalculation.selectedOptions.includes(checkbox.value);
@@ -521,12 +635,21 @@ function addCalculationToCart() {
     const material = calculatorData.materials[currentCalculation.material];
     const totalPrice = getTotalPrice();
     
+    // Рассчитываем скидку
+    let discount = 0;
+    if (currentCalculation.quantity >= 2) {
+        discount = 15;
+    }
+    const discountAmount = totalPrice * discount / 100;
+    const finalPrice = totalPrice - discountAmount;
+    
     // Создаем объект продукта для корзины
     const customDoor = {
         id: Date.now(), // Уникальный ID на основе времени
         name: `Дверь ${doorType.name} из ${material.name}`,
-        description: `Индивидуальный заказ: ${doorType.name}, ${material.name}, ${currentCalculation.height}x${currentCalculation.width}x${currentCalculation.thickness}мм`,
-        price: totalPrice,
+        description: `Индивидуальный заказ: ${doorType.name}, ${material.name}, ${currentCalculation.height}x${currentCalculation.width}x${currentCalculation.thickness}мм, Количество: ${currentCalculation.quantity} шт.`,
+        price: finalPrice / currentCalculation.quantity, // Цена за одну дверь со скидкой
+        quantity: currentCalculation.quantity,
         custom: true,
         calculation: { ...currentCalculation }
     };
@@ -540,11 +663,16 @@ function addCalculationToCart() {
         customDoor.description += `, опции: ${optionsText}`;
     }
     
+    // Добавляем информацию о скидке
+    if (discount > 0) {
+        customDoor.description += `, Скидка: ${discount}%`;
+    }
+    
     // Добавляем в корзину
-    addToCart(customDoor);
+    addToCart(customDoor, currentCalculation.quantity);
     
     // Показываем уведомление
-    showNotification('Индивидуальная дверь добавлена в корзину!');
+    showNotification(`Индивидуальная дверь (${currentCalculation.quantity} шт.) добавлена в корзину!`);
 }
 
 // Инициализация при загрузке

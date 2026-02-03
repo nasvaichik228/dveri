@@ -174,6 +174,18 @@
                         </div>
                     </div>
 
+                    <!-- Количество дверей -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-copy"></i> Количество дверей</h3>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" id="decreaseQuantity">-</button>
+                            <input type="number" id="doorQuantity" value="1" min="1" max="10">
+                            <button class="quantity-btn" id="increaseQuantity">+</button>
+                            <span style="margin-left: 10px;">шт.</span>
+                        </div>
+                        <p class="hint-text">Закажите 2 или более дверей и получите скидку 15%!</p>
+                    </div>
+
                     <!-- Дополнительные опции -->
                     <div class="form-section">
                         <h3><i class="fas fa-plus-circle"></i> Дополнительные опции</h3>
@@ -236,10 +248,16 @@
                                 <span>Дополнительные опции:</span>
                                 <span id="optionsPrice">0 ₽</span>
                             </div>
-                            <div class="price-row total">
-                                <span>Итого:</span>
+                            <div class="price-row">
+                                <span>Стоимость за 1 дверь:</span>
+                                <span id="pricePerDoor">0 ₽</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Итого за <span id="quantityDisplay">1</span> шт.:</span>
                                 <span id="totalPrice">0 ₽</span>
                             </div>
+                            <div id="discountInfo" style="display: none;"></div>
+                            <div id="finalPrice" style="display: none;"></div>
                         </div>
 
                         <div class="economy-badge">
@@ -299,9 +317,9 @@
                         <button class="btn-outline" data-example="2">Применить</button>
                     </div>
                     <div class="example-card">
-                        <h4>Раздвижная стеклянная</h4>
-                        <p>С матовым стеклом, премиум фурнитура</p>
-                        <div class="example-price">89 300 ₽</div>
+                        <h4>Раздвижная стеклянная (2 шт.)</h4>
+                        <p>С матовым стеклом, со скидкой 15%</p>
+                        <div class="example-price">151 810 ₽</div>
                         <button class="btn-outline" data-example="3">Применить</button>
                     </div>
                 </div>
@@ -368,6 +386,35 @@
                 <textarea placeholder="Адрес доставки и установки" required rows="3"></textarea>
                 <button type="submit" class="btn btn-primary">Отправить заявку</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно корзины -->
+    <div class="modal cart-modal" id="cartModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCartModal()">&times;</span>
+            <h3>Ваша корзина</h3>
+            <div class="cart-modal-content" id="cartModalContent">
+                <div class="cart-items-list" id="cartItemsList">
+                    <!-- Товары в корзине -->
+                </div>
+                <div class="cart-summary">
+                    <div class="cart-total-row">
+                        <span>Итого:</span>
+                        <span id="cartModalTotalPrice">0 ₽</span>
+                    </div>
+                    <div class="cart-discount">
+                        <label for="discountCode">Код скидки:</label>
+                        <input type="text" id="discountCode" placeholder="Введите код">
+                        <button class="btn-outline" onclick="applyDiscount()">Применить</button>
+                    </div>
+                    <div class="cart-final-total">
+                        <span>К оплате:</span>
+                        <span id="cartFinalPrice">0 ₽</span>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="checkout()">Оформить заказ</button>
+                </div>
+            </div>
         </div>
     </div>
 

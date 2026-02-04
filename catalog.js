@@ -137,6 +137,10 @@ function createDoorCard(door) {
                 <button class="quick-view-btn" onclick="quickView(${door.id})" title="Быстрый просмотр">
                     <i class="fas fa-eye"></i>
                 </button>
+                <button class="quick-order-btn" onclick="openQuickOrderModal(${door.id})" title="Быстрый заказ">
+                    <i class="fas fa-bolt"></i>
+                    Быстрый заказ
+                </button>
                 <i class="fas fa-door-open"></i>
             </div>
             <div class="door-content">
@@ -150,6 +154,9 @@ function createDoorCard(door) {
                     </button>
                     <button class="btn-outline" onclick="quickAddToCart(${door.id})">
                         <i class="fas fa-cart-plus"></i> В корзину
+                    </button>
+                    <button class="btn btn-secondary" onclick="openQuickOrderModal(${door.id})">
+                        <i class="fas fa-bolt"></i> Быстрый заказ
                     </button>
                 </div>
             </div>
@@ -187,6 +194,107 @@ function addDoorToCart(doorId) {
     if (door) {
         addToCart(door);
     }
+}
+
+// Функция для открытия модального окна быстрого заказа
+function openQuickOrderModal(doorId) {
+    const door = doorsData.find(d => d.id === doorId);
+    if (!door) return;
+    
+    // Сохраняем текущую дверь для быстрого заказа
+    window.currentQuickOrderDoor = door;
+    window.currentQuickOrderQuantity = 1;
+    
+    // Заполняем информацию о товаре
+    const quickOrderInfo = document.getElementById('quickOrderInfo');
+    const categories = Array.isArray(door.category) ? door.category : [door.category];
+    
+    quickOrderInfo.innerHTML = `
+        <div class="quick-order-product">
+            <div class="quick-order-image">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <div class="quick-order-details">
+                <h4>${door.name}</h4>
+                <p>${door.description}</p>
+                <div class="quick-order-price">${formatPrice(door.price)}</div>
+            </div>
+        </div>
+    `;
+    
+    // Обновляем итоговую стоимость
+    updateQuickOrderTotal();
+    
+    // Открываем модальное окно
+    document.getElementById('quickOrderModal').style.display = 'flex';
+    
+    // Прокручиваем к верху формы
+    setTimeout(() => {
+        document.querySelector('#quickOrderForm input').focus();
+    }, 100);
+}
+
+// Функция для закрытия модального окна быстрого заказа
+function closeQuickOrderModal() {
+    document.getElementById('quickOrderModal').style.display = 'none';
+}
+
+// Функция для обновления итоговой стоимости быстрого заказа
+function updateQuickOrderTotal() {
+    if (!window.currentQuickOrderDoor) return;
+    
+    const quantity = window.currentQuickOrderQuantity;
+    const totalPrice = window.currentQuickOrderDoor.price * quantity;
+    
+    document.getElementById('quickOrderTotalPrice').textContent = formatPrice(totalPrice);
+    document.getElementById('quickOrderQuantity').value = quantity;
+}
+
+// Функция для обработки быстрого заказа
+function handleQuickOrder(e) {
+    e.preventDefault();
+    
+    if (!window.currentQuickOrderDoor) {
+        alert('Ошибка: товар не выбран');
+        return;
+    }
+    
+    const formData = new FormData(e.target);
+    const quantity = window.currentQuickOrderQuantity;
+    
+    // Создаем объект заказа
+    const order = {
+        door: window.currentQuickOrderDoor,
+        quantity: quantity,
+        totalPrice: window.currentQuickOrderDoor.price * quantity,
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        comment: formData.get('comment'),
+        timestamp: new Date().toISOString(),
+        type: 'quick'
+    };
+    
+    // Сохраняем заказ в localStorage
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
+    
+    // Также добавляем товар в корзину
+    addToCart(window.currentQuickOrderDoor, quantity);
+    
+    // Показываем уведомление
+    showNotification(`Быстрый заказ "${window.currentQuickOrderDoor.name}" оформлен! Мы свяжемся с вами в течение 15 минут.`);
+    
+    // Закрываем модальное окно
+    closeQuickOrderModal();
+    
+    // Очищаем форму
+    e.target.reset();
+    
+    // Сбрасываем текущий товар
+    window.currentQuickOrderDoor = null;
+    window.currentQuickOrderQuantity = 1;
 }
 
 // Функция для отображения каталога
@@ -265,6 +373,9 @@ function showDoorDetails(doorId) {
                 <button class="btn btn-primary" onclick="addDoorToCart(${door.id}); closeProductModal()">
                     <i class="fas fa-cart-plus"></i> Добавить в корзину
                 </button>
+                <button class="btn btn-secondary" onclick="openQuickOrderModal(${door.id}); closeProductModal()">
+                    <i class="fas fa-bolt"></i> Быстрый заказ
+                </button>
                 <button class="btn-outline" onclick="closeProductModal()">Закрыть</button>
             </div>
         </div>
@@ -299,6 +410,9 @@ function quickView(doorId) {
                     <div class="quick-view-price">${formatPrice(door.price)}</div>
                     <button class="btn btn-primary" onclick="addDoorToCart(${door.id}); closeQuickView()">
                         <i class="fas fa-cart-plus"></i> В корзину
+                    </button>
+                    <button class="btn btn-secondary" onclick="openQuickOrderModal(${door.id}); closeQuickView()">
+                        <i class="fas fa-bolt"></i> Быстрый заказ
                     </button>
                     <button class="btn-outline" onclick="showDoorDetails(${door.id}); closeQuickView()">
                         Подробнее
@@ -369,6 +483,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Назначаем обработчик для формы быстрого заказа
+    const quickOrderForm = document.getElementById('quickOrderForm');
+    if (quickOrderForm) {
+        quickOrderForm.addEventListener('submit', handleQuickOrder);
+    }
+    
+    // Назначаем обработчики для управления количеством в быстром заказе
+    const quickDecreaseBtn = document.getElementById('quickDecreaseQuantity');
+    const quickIncreaseBtn = document.getElementById('quickIncreaseQuantity');
+    const quickQuantityInput = document.getElementById('quickOrderQuantity');
+    
+    if (quickDecreaseBtn) {
+        quickDecreaseBtn.addEventListener('click', function() {
+            if (window.currentQuickOrderQuantity > 1) {
+                window.currentQuickOrderQuantity--;
+                updateQuickOrderTotal();
+            }
+        });
+    }
+    
+    if (quickIncreaseBtn) {
+        quickIncreaseBtn.addEventListener('click', function() {
+            if (window.currentQuickOrderQuantity < 10) {
+                window.currentQuickOrderQuantity++;
+                updateQuickOrderTotal();
+            }
+        });
+    }
+    
+    if (quickQuantityInput) {
+        quickQuantityInput.addEventListener('input', function() {
+            let quantity = parseInt(this.value) || 1;
+            if (quantity < 1) quantity = 1;
+            if (quantity > 10) quantity = 10;
+            window.currentQuickOrderQuantity = quantity;
+            updateQuickOrderTotal();
+        });
+    }
+    
     // Закрытие модальных окон при клике вне их
     const productModal = document.getElementById('productModal');
     if (productModal) {
@@ -384,6 +537,15 @@ document.addEventListener('DOMContentLoaded', function() {
         cartModal.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeCartModal();
+            }
+        });
+    }
+    
+    const quickOrderModal = document.getElementById('quickOrderModal');
+    if (quickOrderModal) {
+        quickOrderModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQuickOrderModal();
             }
         });
     }
@@ -419,6 +581,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closeQuickView();
             closeCartModal();
             closeProductModal();
+            closeQuickOrderModal();
         }
     });
 });
@@ -428,6 +591,8 @@ window.showDoorDetails = showDoorDetails;
 window.orderDoor = orderDoor;
 window.addDoorToCart = addDoorToCart;
 window.quickAddToCart = quickAddToCart;
+window.openQuickOrderModal = openQuickOrderModal;
+window.closeQuickOrderModal = closeQuickOrderModal;
 window.closeProductModal = closeProductModal;
 window.quickView = quickView;
 window.closeQuickView = closeQuickView;

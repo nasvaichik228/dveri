@@ -3,6 +3,16 @@
 // Ключ для localStorage
 const CART_STORAGE_KEY = 'masterdoors_cart';
 
+// Настройки корзины
+const CART_SETTINGS = {
+    freeDeliveryThreshold: 50000, // Бесплатная доставка от 50 000 ₽
+    discountCodes: {
+        'WELCOME10': 10,
+        'SUMMER15': 15,
+        'DOOR20': 20
+    }
+};
+
 // Инициализация корзины
 let cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
 
@@ -30,9 +40,45 @@ function updateCartCount() {
     }
 }
 
-// Функция для обновления общей стоимости
+// Функция для расчета общей суммы корзины
+function calculateCartTotal() {
+    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+}
+
+// Функция для обновления прогресс-бара бесплатной доставки
+function updateDeliveryProgress() {
+    const total = calculateCartTotal();
+    const progressElement = document.getElementById('deliveryProgress');
+    const progressTextElement = document.getElementById('deliveryProgressText');
+    
+    if (!progressElement || !progressTextElement) return;
+    
+    const threshold = CART_SETTINGS.freeDeliveryThreshold;
+    const progress = Math.min((total / threshold) * 100, 100);
+    
+    progressElement.style.width = `${progress}%`;
+    
+    if (total >= threshold) {
+        progressTextElement.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>Бесплатная доставка активирована!</span>
+        `;
+        progressTextElement.className = 'delivery-progress-text free';
+    } else {
+        const remaining = threshold - total;
+        progressTextElement.innerHTML = `
+            <i class="fas fa-truck"></i>
+            <span>Добавьте товаров на ${formatPrice(remaining)} для бесплатной доставки</span>
+        `;
+        progressTextElement.className = 'delivery-progress-text';
+    }
+}
+
+// Функция для обновления отображения общей стоимости
 function updateCartTotal() {
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = calculateCartTotal();
+    
+    // Обновляем элементы отображения
     const cartTotalElement = document.getElementById('cartTotalPrice');
     if (cartTotalElement) {
         cartTotalElement.textContent = formatPrice(total);
@@ -47,6 +93,9 @@ function updateCartTotal() {
     if (cartFinalElement) {
         cartFinalElement.textContent = formatPrice(total);
     }
+    
+    // Обновляем прогресс-бар
+    updateDeliveryProgress();
 }
 
 // Функция для сохранения корзины в localStorage
@@ -74,6 +123,12 @@ function addToCart(product, quantity = 1) {
     saveCart();
     showNotification(`"${product.name}" добавлен в корзину!`);
     animateCartIcon(); // Добавляем вызов анимации
+    
+    // Показываем уведомление о бесплатной доставке
+    const total = calculateCartTotal();
+    if (total >= CART_SETTINGS.freeDeliveryThreshold && total - (product.price * quantity) < CART_SETTINGS.freeDeliveryThreshold) {
+        showNotification('🎉 Поздравляем! Вы получили бесплатную доставку!', false);
+    }
 }
 
 // Функция для удаления товара из корзины
@@ -138,6 +193,26 @@ function updateCartDropdown() {
             </button>
         </div>
     `).join('');
+    
+    // Добавляем прогресс-бар в выпадающее меню
+    const total = calculateCartTotal();
+    const threshold = CART_SETTINGS.freeDeliveryThreshold;
+    const progress = Math.min((total / threshold) * 100, 100);
+    
+    const deliveryProgressHTML = `
+        <div class="delivery-progress-container">
+            <div class="delivery-progress-bar">
+                <div class="delivery-progress" style="width: ${progress}%"></div>
+            </div>
+            <div class="delivery-progress-text ${total >= threshold ? 'free' : ''}">
+                ${total >= threshold 
+                    ? '<i class="fas fa-check-circle"></i> Бесплатная доставка!' 
+                    : `<i class="fas fa-truck"></i> Добавьте товаров на ${formatPrice(threshold - total)}`}
+            </div>
+        </div>
+    `;
+    
+    cartItemsElement.insertAdjacentHTML('beforeend', deliveryProgressHTML);
 }
 
 // Функция для открытия модального окна корзины
@@ -199,6 +274,37 @@ function updateCartModal() {
         </div>
     `).join('');
     
+    // Добавляем прогресс-бар в модальное окно
+    const total = calculateCartTotal();
+    const threshold = CART_SETTINGS.freeDeliveryThreshold;
+    const progress = Math.min((total / threshold) * 100, 100);
+    
+    const progressBarHTML = `
+        <div class="delivery-progress-container">
+            <div class="delivery-progress-header">
+                <h4><i class="fas fa-truck"></i> Бесплатная доставка</h4>
+                <span class="delivery-amount">${formatPrice(total)} / ${formatPrice(threshold)}</span>
+            </div>
+            <div class="delivery-progress-bar">
+                <div class="delivery-progress" style="width: ${progress}%"></div>
+            </div>
+            <div class="delivery-progress-text ${total >= threshold ? 'free' : ''}">
+                ${total >= threshold 
+                    ? '<i class="fas fa-check-circle"></i> Поздравляем! Вы получили бесплатную доставку!' 
+                    : `Добавьте товаров на ${formatPrice(threshold - total)} для бесплатной доставки`}
+            </div>
+        </div>
+    `;
+    
+    // Вставляем прогресс-бар перед итоговой суммой
+    const cartSummary = document.querySelector('.cart-summary');
+    if (cartSummary) {
+        const totalRow = cartSummary.querySelector('.cart-total-row');
+        if (totalRow) {
+            totalRow.insertAdjacentHTML('beforebegin', progressBarHTML);
+        }
+    }
+    
     updateCartTotal();
 }
 
@@ -210,9 +316,13 @@ function checkout() {
     }
     
     // Сохраняем заказ
+    const total = calculateCartTotal();
+    const hasFreeDelivery = total >= CART_SETTINGS.freeDeliveryThreshold;
+    
     const order = {
         items: cart,
-        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        total: total,
+        hasFreeDelivery: hasFreeDelivery,
         timestamp: new Date().toISOString()
     };
     
@@ -223,6 +333,11 @@ function checkout() {
     // Показываем форму заказа
     const orderForm = `
         <h4>Оформление заказа</h4>
+        <div class="order-summary-info">
+            <p><strong>Количество товаров:</strong> ${cart.reduce((sum, item) => sum + item.quantity, 0)} шт.</p>
+            <p><strong>Общая стоимость:</strong> ${formatPrice(total)}</p>
+            ${hasFreeDelivery ? '<p class="free-delivery-badge"><i class="fas fa-check-circle"></i> Бесплатная доставка включена!</p>' : ''}
+        </div>
         <form id="checkoutForm" style="margin-top: 1rem;">
             <input type="text" placeholder="Ваше имя" required>
             <input type="tel" placeholder="Ваш телефон" required>
@@ -252,20 +367,19 @@ function checkout() {
 // Функция для применения скидки
 function applyDiscount() {
     const discountCode = document.getElementById('discountCode').value;
-    const discountCodes = {
-        'WELCOME10': 10,
-        'SUMMER15': 15,
-        'DOOR20': 20
-    };
+    const discountCodes = CART_SETTINGS.discountCodes;
     
     if (discountCode in discountCodes) {
         const discountPercent = discountCodes[discountCode];
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const total = calculateCartTotal();
         const discountAmount = total * discountPercent / 100;
         const finalPrice = total - discountAmount;
         
         document.getElementById('cartFinalPrice').textContent = formatPrice(finalPrice);
-        showNotification(`Скидка ${discountPercent}% применена!`);
+        showNotification(`Скидка ${discountPercent}% применена! Экономия: ${formatPrice(discountAmount)}`);
+        
+        // Сохраняем примененный код скидки
+        localStorage.setItem('lastDiscountCode', discountCode);
     } else {
         showNotification('Неверный код скидки', true);
     }
@@ -349,6 +463,15 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
     updateCartTotal();
     updateCartDropdown();
+    
+    // Восстанавливаем последний примененный код скидки
+    const lastDiscountCode = localStorage.getItem('lastDiscountCode');
+    if (lastDiscountCode) {
+        const discountCodeInput = document.getElementById('discountCode');
+        if (discountCodeInput) {
+            discountCodeInput.value = lastDiscountCode;
+        }
+    }
     
     // Закрытие модального окна корзины при клике вне его
     const cartModal = document.getElementById('cartModal');

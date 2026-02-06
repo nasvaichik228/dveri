@@ -2792,3 +2792,218 @@ h2 {
 .door-actions .btn-secondary {
     animation: pulse 2s infinite;
 }
+/* Стили для прогресс-бара бесплатной доставки */
+
+.delivery-progress-container {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.dark-theme .delivery-progress-container {
+    background: #2c2c2c;
+    border-color: #444;
+}
+
+.delivery-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.delivery-progress-header h4 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.dark-theme .delivery-progress-header h4 {
+    color: #ffffff;
+}
+
+.delivery-amount {
+    font-weight: 600;
+    color: #8B4513;
+    font-size: 0.9rem;
+}
+
+.dark-theme .delivery-amount {
+    color: #d4a574;
+}
+
+.delivery-progress-bar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.dark-theme .delivery-progress-bar {
+    background: #444;
+}
+
+.delivery-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.delivery-progress-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 8px;
+}
+
+.dark-theme .delivery-progress-text {
+    color: #b0b0b0;
+}
+
+.delivery-progress-text.free {
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.delivery-progress-text i {
+    font-size: 1rem;
+}
+
+.delivery-progress-text.free i {
+    color: #4caf50;
+}
+
+/* Стили для бейджа бесплатной доставки */
+.free-delivery-badge {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+    font-weight: 600;
+}
+
+.dark-theme .free-delivery-badge {
+    background: #1b5e20;
+    color: #c8e6c9;
+}
+
+.free-delivery-badge i {
+    font-size: 1.1rem;
+}
+
+/* Анимация для прогресс-бара при достижении цели */
+@keyframes progressComplete {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.delivery-progress-container:has(.delivery-progress-text.free) .delivery-progress {
+    animation: progressComplete 0.5s ease;
+}
+
+/* Стили для сводки заказа */
+.order-summary-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.dark-theme .order-summary-info {
+    background: #2c2c2c;
+}
+
+.order-summary-info p {
+    margin: 8px 0;
+    color: #495057;
+}
+
+.dark-theme .order-summary-info p {
+    color: #b0b0b0;
+}
+
+.order-summary-info strong {
+    color: #2c3e50;
+    min-width: 180px;
+    display: inline-block;
+}
+
+.dark-theme .order-summary-info strong {
+    color: #ffffff;
+}
+
+/* Улучшение для выпадающей корзины */
+.cart-dropdown .delivery-progress-container {
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.cart-dropdown .delivery-progress-text {
+    font-size: 0.8rem;
+}
+
+/* Стили для уведомления о бесплатной доставке */
+.notification.free-delivery {
+    background: linear-gradient(45deg, #4caf50, #8bc34a);
+}
+
+.notification.free-delivery i {
+    color: #fff;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Подсказка при наведении на прогресс-бар */
+.delivery-progress-bar {
+    position: relative;
+    cursor: help;
+}
+
+.delivery-progress-bar:hover::after {
+    content: 'Бесплатная доставка от 50 000 ₽';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 5px;
+}
+
+.dark-theme .delivery-progress-bar:hover::after {
+    background: #fff;
+    color: #333;
+}

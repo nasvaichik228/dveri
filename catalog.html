@@ -23,6 +23,10 @@
                 <li><a href="index.html#about">О нас</a></li>
                 <li><a href="catalog.html" class="active">Каталог</a></li>
                 <li><a href="calculator.html">Калькулятор</a></li>
+                <li><a href="favorites.html" id="favoritesLink">
+                    <i class="fas fa-heart"></i> Избранное
+                    <span class="favorites-count-badge" id="favoritesCount">0</span>
+                </a></li>
                 <li><a href="index.html#services">Услуги</a></li>
                 <li><a href="index.html#portfolio">Портфолио</a></li>
                 <li><a href="index.html#contact">Контакты</a></li>
@@ -80,6 +84,9 @@
                     <button class="filter-btn" data-filter="entrance">Входные</button>
                     <button class="filter-btn" data-filter="sliding">Раздвижные</button>
                     <button class="filter-btn" data-filter="glass">Стеклянные</button>
+                    <button class="filter-btn" data-filter="favorites" id="favoritesFilterBtn">
+                        <i class="fas fa-heart"></i> Избранное
+                    </button>
                 </div>
                 <div class="sort">
                     <label for="sort">Сортировка:</label>
@@ -88,6 +95,7 @@
                         <option value="price-low">Сначала дешевле</option>
                         <option value="price-high">Сначала дороже</option>
                         <option value="new">Новинки</option>
+                        <option value="favorites">По количеству лайков</option>
                     </select>
                 </div>
             </div>
@@ -127,9 +135,9 @@
                     <p>На все изделия и работы</p>
                 </div>
                 <div class="benefit">
-                    <i class="fas fa-paint-roller"></i>
-                    <h3>Любой цвет</h3>
-                    <p>Бесплатная покраска в любой цвет</p>
+                    <i class="fas fa-heart"></i>
+                    <h3>Избранное</h3>
+                    <p>Сохраняйте понравившиеся товары</p>
                 </div>
             </div>
         </div>
@@ -179,6 +187,19 @@
                     <!-- Товары в корзине -->
                 </div>
                 <div class="cart-summary">
+                    <div class="delivery-progress-container" style="display: none;">
+                        <div class="delivery-progress-header">
+                            <h4><i class="fas fa-truck"></i> Бесплатная доставка</h4>
+                            <span class="delivery-amount">0 ₽ / 50 000 ₽</span>
+                        </div>
+                        <div class="delivery-progress-bar">
+                            <div class="delivery-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="delivery-progress-text">
+                            <i class="fas fa-truck"></i>
+                            <span>Добавьте товаров на 50 000 ₽ для бесплатной доставки</span>
+                        </div>
+                    </div>
                     <div class="cart-total-row">
                         <span>Итого:</span>
                         <span id="cartModalTotalPrice">0 ₽</span>
@@ -231,8 +252,20 @@
         </div>
     </div>
 
+    <!-- Модальное окно избранного -->
+    <div class="modal favorites-modal" id="favoritesModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFavoritesModal()">&times;</span>
+            <h3><i class="fas fa-heart"></i> Избранное</h3>
+            <div class="favorites-content" id="favoritesContent">
+                <!-- Содержимое будет загружено через JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="catalog.js"></script>
     <script src="cart.js"></script>
+    <script src="favorites.js"></script>
 </body>
 </html>

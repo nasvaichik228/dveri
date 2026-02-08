@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное | МастерДвери</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-door-closed"></i>
+                    <span>МастерДвери</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Главная</a></li>
+                <li><a href="index.html#about">О нас</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="calculator.html">Калькулятор</a></li>
+                <li><a href="favorites.html" class="active">
+                    <i class="fas fa-heart"></i> Избранное
+                    <span class="favorites-count-badge" id="favoritesCount">0</span>
+                </a></li>
+                <li><a href="index.html#services">Услуги</a></li>
+                <li><a href="index.html#portfolio">Портфолио</a></li>
+                <li><a href="index.html#contact">Контакты</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="theme-switcher">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </div>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                    <div class="cart-dropdown" id="cartDropdown">
+                        <div class="cart-items" id="cartItems">
+                            <!-- Корзина пуста -->
+                        </div>
+                        <div class="cart-total">
+                            <span>Итого:</span>
+                            <span id="cartTotalPrice">0 ₽</span>
+                        </div>
+                        <div class="cart-actions">
+                            <button class="btn btn-primary" onclick="goToCart()">Оформить заказ</button>
+                            <button class="btn-outline" onclick="clearCart()">Очистить</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="phone">
+                    <i class="fas fa-phone"></i>
+                    <span>+7 (999) 123-45-67</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Хлебные крошки -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a href="index.html">Главная</a> / <span>Избранное</span>
+        </div>
+    </div>
+
+    <!-- Избранное -->
+    <section class="favorites">
+        <div class="container">
+            <h1><i class="fas fa-heart"></i> Избранное</h1>
+            <p class="favorites-subtitle">Товары, которые вам понравились</p>
+            
+            <div class="favorites-grid" id="favoritesGrid">
+                <!-- Избранные товары будут загружены через JavaScript -->
+            </div>
+            
+            <div class="empty-favorites" id="emptyFavorites" style="display: none;">
+                <div class="empty-state">
+                    <i class="fas fa-heart fa-4x"></i>
+                    <h3>В избранном пока пусто</h3>
+                    <p>Добавляйте понравившиеся товары, нажимая на сердечко ♥</p>
+                    <a href="catalog.html" class="btn btn-primary">Перейти в каталог</a>
+                </div>
+            </div>
+            
+            <div class="favorites-actions" id="favoritesActions" style="display: none;">
+                <button class="btn btn-primary" onclick="addAllFavoritesToCart()">
+                    <i class="fas fa-cart-plus"></i> Добавить все в корзину
+                </button>
+                <button class="btn-outline" onclick="clearFavorites()">
+                    <i class="fas fa-trash"></i> Очистить избранное
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-door-closed"></i>
+                    <span>МастерДвери</span>
+                </div>
+                <p>© 2023 Производство дверей на заказ. Все права защищены.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Модальное окно корзины -->
+    <div class="modal cart-modal" id="cartModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCartModal()">&times;</span>
+            <h3>Ваша корзина</h3>
+            <div class="cart-modal-content" id="cartModalContent">
+                <div class="cart-items-list" id="cartItemsList">
+                    <!-- Товары в корзине -->
+                </div>
+                <div class="cart-summary">
+                    <div class="delivery-progress-container" style="display: none;">
+                        <div class="delivery-progress-header">
+                            <h4><i class="fas fa-truck"></i> Бесплатная доставка</h4>
+                            <span class="delivery-amount">0 ₽ / 50 000 ₽</span>
+                        </div>
+                        <div class="delivery-progress-bar">
+                            <div class="delivery-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="delivery-progress-text">
+                            <i class="fas fa-truck"></i>
+                            <span>Добавьте товаров на 50 000 ₽ для бесплатной доставки</span>
+                        </div>
+                    </div>
+                    <div class="cart-total-row">
+                        <span>Итого:</span>
+                        <span id="cartModalTotalPrice">0 ₽</span>
+                    </div>
+                    <div class="cart-discount">
+                        <label for="discountCode">Код скидки:</label>
+                        <input type="text" id="discountCode" placeholder="Введите код">
+                        <button class="btn-outline" onclick="applyDiscount()">Применить</button>
+                    </div>
+                    <div class="cart-final-total">
+                        <span>К оплате:</span>
+                        <span id="cartFinalPrice">0 ₽</span>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="checkout()">Оформить заказ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="cart.js"></script>
+    <script src="favorites.js"></script>
+</body>
+</html>

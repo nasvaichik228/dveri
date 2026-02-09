@@ -157,3 +157,74 @@ if (!isCatalogPage) {
         }
     });
 }
+
+// Функция для показа уведомлений (для использования в других файлах)
+function showNotification(message, isError = false) {
+    // Проверяем, существует ли уже функция showNotification в cart.js
+    if (typeof window.showNotification === 'function' && window.showNotification !== showNotification) {
+        return; // Используем существующую функцию из cart.js
+    }
+    
+    // Создаем элемент уведомления
+    const notification = document.createElement('div');
+    notification.className = `notification ${isError ? 'error' : ''}`;
+    notification.innerHTML = `
+        <i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i>
+        <span>${message}</span>
+    `;
+    
+    // Добавляем стили для уведомления
+    if (!document.querySelector('.notification')) {
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                padding: 15px 25px;
+                background: #4caf50;
+                color: white;
+                border-radius: 5px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1002;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideInRight 0.3s ease;
+            }
+            .notification.error {
+                background: #f44336;
+            }
+            .notification i {
+                font-size: 1.2rem;
+            }
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Удаляем уведомление через 3 секунды
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(30px)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Экспортируем функцию для использования в других файлах
+window.showNotification = showNotification;

@@ -128,7 +128,7 @@ function createDoorCard(door) {
     const categoryClass = categories[0];
     
     return `
-        <div class="door-card" data-category="${categories.join(' ')}" data-id="${door.id}">
+        <div class="door-card fade-in" data-category="${categories.join(' ')}" data-id="${door.id}">
             <div class="door-image" style="position: relative;">
                 <button class="add-to-cart-btn" onclick="quickAddToCart(${door.id})" title="Добавить в корзину">
                     <i class="fas fa-cart-plus"></i>
@@ -303,6 +303,14 @@ function renderCatalog(doors = doorsData) {
     if (!grid) return;
     
     grid.innerHTML = doors.map(door => createDoorCard(door)).join('');
+    
+    // Добавляем анимацию для всех карточек
+    setTimeout(() => {
+        const cards = grid.querySelectorAll('.door-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    }, 100);
 }
 
 // Функция для фильтрации дверей

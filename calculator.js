@@ -75,6 +75,7 @@ function setupEventListeners() {
         radio.addEventListener('change', function() {
             currentCalculation.doorType = this.value;
             calculatePrice();
+            highlightSelectedOption(this);
         });
     });
 
@@ -83,6 +84,7 @@ function setupEventListeners() {
         radio.addEventListener('change', function() {
             currentCalculation.material = this.value;
             calculatePrice();
+            highlightSelectedOption(this);
         });
     });
 
@@ -111,6 +113,12 @@ function setupEventListeners() {
             
             currentCalculation.height = height;
             currentCalculation.width = width;
+            
+            // Добавляем анимацию к кнопке
+            this.classList.add('size-preset-active');
+            setTimeout(() => {
+                this.classList.remove('size-preset-active');
+            }, 300);
             
             calculatePrice();
         });
@@ -175,6 +183,27 @@ function setupEventListeners() {
             calculatePrice();
         }
     });
+}
+
+// Подсветка выбранной опции
+function highlightSelectedOption(element) {
+    const parentLabel = element.closest('label');
+    if (parentLabel) {
+        parentLabel.classList.add('option-selected');
+        
+        // Убираем подсветку с других опций
+        const allOptions = parentLabel.parentElement.querySelectorAll('label');
+        allOptions.forEach(option => {
+            if (option !== parentLabel) {
+                option.classList.remove('option-selected');
+            }
+        });
+        
+        // Автоматически убираем класс через 500ms
+        setTimeout(() => {
+            parentLabel.classList.remove('option-selected');
+        }, 500);
+    }
 }
 
 // Обновление размеров
@@ -259,6 +288,7 @@ function updatePriceDisplay(basePrice, sizePrice, optionsPrice, pricePerDoor, to
     document.getElementById('optionsPrice').textContent = formatPrice(optionsPrice);
     document.getElementById('pricePerDoor').textContent = formatPrice(pricePerDoor);
     document.getElementById('totalPrice').textContent = formatPrice(totalPrice);
+    document.getElementById('quantityDisplay').textContent = currentCalculation.quantity;
     
     // Обновляем информацию о скидке
     const discountElement = document.getElementById('discountInfo');
@@ -395,6 +425,9 @@ function loadExample(exampleId) {
     
     // Прокручиваем к верху
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Показываем уведомление
+    showNotification('Пример расчёта успешно загружен!');
 }
 
 // Открытие модального окна сохранения

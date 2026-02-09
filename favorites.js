@@ -6,6 +6,26 @@ const FAVORITES_STORAGE_KEY = 'masterdoors_favorites';
 // Инициализация избранного
 let favorites = JSON.parse(localStorage.getItem(FAVORITES_STORAGE_KEY)) || [];
 
+// Анимация для сердца
+function createHeartAnimation() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .heart-pulse i {
+            animation: heartPulse 0.3s ease;
+            color: #e91e63;
+        }
+        .favorite-active {
+            color: #e91e63 !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 // Функция для обновления счетчика избранного
 function updateFavoritesCount() {
     const favoritesCountElement = document.getElementById('favoritesCount');
@@ -33,6 +53,11 @@ function addToFavorites(doorId) {
         });
         saveFavorites();
         showNotification(`"${door.name}" добавлен в избранное!`, false);
+        
+        // Создаем анимацию если ее еще нет
+        if (!document.querySelector('style[data-heart-animation]')) {
+            createHeartAnimation();
+        }
         
         // Анимация сердца
         const heartBtn = document.querySelector(`.favorite-btn[data-id="${doorId}"]`);
@@ -105,7 +130,7 @@ function renderFavoritesPage() {
     favoritesActions.style.display = 'flex';
     
     favoritesGrid.innerHTML = favorites.map(door => `
-        <div class="favorite-card" data-id="${door.id}">
+        <div class="favorite-card fade-in" data-id="${door.id}">
             <div class="favorite-card-image">
                 <i class="fas fa-door-open"></i>
                 <button class="favorite-remove-btn" onclick="removeFromFavorites(${door.id})" title="Удалить из избранного">
@@ -130,6 +155,14 @@ function renderFavoritesPage() {
             </div>
         </div>
     `).join('');
+    
+    // Добавляем задержку для анимации
+    setTimeout(() => {
+        const cards = favoritesGrid.querySelectorAll('.favorite-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    }, 100);
 }
 
 // Функция для добавления всех избранных товаров в корзину
@@ -229,6 +262,9 @@ function updateFavoritesModal() {
 // Инициализация избранного при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     updateFavoritesCount();
+    
+    // Создаем анимацию для сердца
+    createHeartAnimation();
     
     // Если мы на странице избранного, рендерим ее
     if (window.location.pathname.includes('favorites.html')) {

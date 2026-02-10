@@ -106,6 +106,9 @@ const doorsData = [
     }
 ];
 
+// Ключ для хранения недавно просмотренных товаров
+const RECENTLY_VIEWED_KEY = 'masterdoors_recently_viewed';
+
 // Функция для форматирования цены
 function formatPrice(price) {
     return price.toLocaleString('ru-RU') + ' ₽';
@@ -120,6 +123,89 @@ function getCategoryName(category) {
         'glass': 'Стеклянная'
     };
     return names[category] || category;
+}
+
+// Функция для добавления товара в историю просмотров
+function addToRecentlyViewed(doorId) {
+    let recentlyViewed = JSON.parse(localStorage.getItem(RECENTLY_VIEWED_KEY)) || [];
+    
+    // Удаляем товар, если он уже есть в истории
+    recentlyViewed = recentlyViewed.filter(id => id !== doorId);
+    
+    // Добавляем товар в начало
+    recentlyViewed.unshift(doorId);
+    
+    // Ограничиваем историю 6 товарами
+    if (recentlyViewed.length > 6) {
+        recentlyViewed = recentlyViewed.slice(0, 6);
+    }
+    
+    localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(recentlyViewed));
+    
+    // Обновляем отображение недавно просмотренных
+    updateRecentlyViewedDisplay();
+}
+
+// Функция для обновления отображения недавно просмотренных товаров
+function updateRecentlyViewedDisplay() {
+    const recentlyViewedSection = document.getElementById('recentlyViewedSection');
+    const recentlyViewedGrid = document.getElementById('recentlyViewedGrid');
+    
+    if (!recentlyViewedSection || !recentlyViewedGrid) return;
+    
+    const recentlyViewedIds = JSON.parse(localStorage.getItem(RECENTLY_VIEWED_KEY)) || [];
+    
+    // Получаем только существующие товары
+    const recentDoors = recentlyViewedIds
+        .map(id => doorsData.find(door => door.id === id))
+        .filter(door => door !== undefined)
+        .slice(0, 4); // Показываем максимум 4 товара
+    
+    if (recentDoors.length === 0) {
+        recentlyViewedSection.style.display = 'none';
+        return;
+    }
+    
+    recentlyViewedSection.style.display = 'block';
+    
+    recentlyViewedGrid.innerHTML = recentDoors.map(door => {
+        const categories = Array.isArray(door.category) ? door.category : [door.category];
+        const categoryClass = categories[0];
+        
+        return `
+            <div class="recently-viewed-card" onclick="showDoorDetails(${door.id})">
+                <div class="recently-viewed-image">
+                    <i class="fas fa-door-open"></i>
+                    <div class="recently-viewed-overlay">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+                <div class="recently-viewed-content">
+                    <span class="door-category ${categoryClass}">${getCategoryName(categories[0])}</span>
+                    <h4>${door.name}</h4>
+                    <div class="recently-viewed-price">${formatPrice(door.price)}</div>
+                    <button class="btn-outline small" onclick="event.stopPropagation(); addDoorToCart(${door.id})">
+                        <i class="fas fa-cart-plus"></i> В корзину
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Добавляем анимацию для карточек
+    setTimeout(() => {
+        const cards = recentlyViewedGrid.querySelectorAll('.recently-viewed-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    }, 100);
+}
+
+// Функция для очистки истории просмотров
+function clearRecentlyViewed() {
+    localStorage.removeItem(RECENTLY_VIEWED_KEY);
+    updateRecentlyViewedDisplay();
+    showNotification('История просмотров очищена');
 }
 
 // Функция для создания карточки двери
@@ -356,6 +442,9 @@ function showDoorDetails(doorId) {
     const door = doorsData.find(d => d.id === doorId);
     if (!door) return;
     
+    // Добавляем в историю просмотров
+    addToRecentlyViewed(doorId);
+    
     const modalContent = document.getElementById('productModalContent');
     const categories = Array.isArray(door.category) ? door.category : [door.category];
     
@@ -401,6 +490,9 @@ function closeProductModal() {
 function quickView(doorId) {
     const door = doorsData.find(d => d.id === doorId);
     if (!door) return;
+    
+    // Добавляем в историю просмотров
+    addToRecentlyViewed(doorId);
     
     // Создаем модальное окно быстрого просмотра
     const quickViewModal = document.createElement('div');
@@ -469,6 +561,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Рендерим каталог
     renderCatalog();
+    
+    // Инициализируем недавно просмотренные товары
+    updateRecentlyViewedDisplay();
     
     // Назначаем обработчики для фильтров
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -592,6 +687,25 @@ document.addEventListener('DOMContentLoaded', function() {
             closeQuickOrderModal();
         }
     });
+    
+    // Добавляем кнопку очистки истории в фильтры
+    const filterGroup = document.querySelector('.filter-group');
+    if (filterGroup) {
+        const clearHistoryBtn = document.createElement('button');
+        clearHistoryBtn.className = 'filter-btn';
+        clearHistoryBtn.innerHTML = '<i class="fas fa-trash"></i> Очистить историю';
+        clearHistoryBtn.title = 'Очистить историю просмотров';
+        clearHistoryBtn.style.marginLeft = 'auto';
+        clearHistoryBtn.style.background = '#f8f9fa';
+        clearHistoryBtn.style.border = '1px solid #dee2e6';
+        clearHistoryBtn.addEventListener('click', clearRecentlyViewed);
+        
+        // Вставляем кнопку после всех фильтров
+        const favoritesFilterBtn = document.getElementById('favoritesFilterBtn');
+        if (favoritesFilterBtn) {
+            favoritesFilterBtn.insertAdjacentElement('afterend', clearHistoryBtn);
+        }
+    }
 });
 
 // Экспортируем функции для использования в консоли
@@ -604,3 +718,4 @@ window.closeQuickOrderModal = closeQuickOrderModal;
 window.closeProductModal = closeProductModal;
 window.quickView = quickView;
 window.closeQuickView = closeQuickView;
+window.clearRecentlyViewed = clearRecentlyViewed;

@@ -1,5 +1,47 @@
+// script.js
 // Проверяем, находимся ли мы на странице каталога
 const isCatalogPage = window.location.pathname.includes('catalog.html');
+
+// Создаем индикатор загрузки
+function createLoader() {
+    // Проверяем, существует ли уже лоадер
+    if (document.querySelector('.page-loader')) return;
+    
+    const loader = document.createElement('div');
+    loader.className = 'page-loader';
+    loader.innerHTML = `
+        <div class="loader-content">
+            <div class="loader-spinner">
+                <i class="fas fa-door-closed"></i>
+            </div>
+            <div class="loader-text">МастерДвери</div>
+        </div>
+    `;
+    document.body.appendChild(loader);
+    
+    // Скрываем лоадер после загрузки
+    setTimeout(() => {
+        hideLoader();
+    }, 800);
+}
+
+// Показать лоадер
+function showLoader() {
+    const loader = document.querySelector('.page-loader');
+    if (loader) {
+        loader.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Блокируем скролл
+    }
+}
+
+// Скрыть лоадер
+function hideLoader() {
+    const loader = document.querySelector('.page-loader');
+    if (loader) {
+        loader.classList.remove('active');
+        document.body.style.overflow = ''; // Восстанавливаем скролл
+    }
+}
 
 // Функции для модального окна (только для главной страницы)
 if (!isCatalogPage) {
@@ -15,16 +57,24 @@ if (!isCatalogPage) {
 // Обработка формы заявки на замер
 document.getElementById('measureForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
-    alert('Спасибо! Мы свяжемся с вами в ближайшее время для уточнения времени замера.');
-    closeModal();
-    this.reset();
+    showLoader();
+    setTimeout(() => {
+        alert('Спасибо! Мы свяжемся с вами в ближайшее время для уточнения времени замера.');
+        closeModal();
+        this.reset();
+        hideLoader();
+    }, 500); // Имитация отправки
 });
 
 // Обработка формы контактов
 document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
-    alert('Спасибо за ваше сообщение! Мы ответим вам в течение 24 часов.');
-    this.reset();
+    showLoader();
+    setTimeout(() => {
+        alert('Спасибо за ваше сообщение! Мы ответим вам в течение 24 часов.');
+        this.reset();
+        hideLoader();
+    }, 500);
 });
 
 // Плавная прокрутка для якорных ссылок
@@ -83,7 +133,7 @@ window.addEventListener('scroll', function() {
     }
     
     // Анимация появления элементов при скролле
-    const animatedElements = document.querySelectorAll('.feature, .service-card, .portfolio-item');
+    const animatedElements = document.querySelectorAll('.feature, .service-card, .portfolio-item, .door-card, .benefit');
     
     animatedElements.forEach(element => {
         const elementPosition = element.getBoundingClientRect().top;
@@ -117,6 +167,9 @@ window.addEventListener('load', function() {
         heroImage.style.opacity = '1';
         heroImage.style.transform = 'translateY(0)';
     }, 600);
+    
+    // Скрываем лоадер при полной загрузке
+    hideLoader();
 });
 
 // Тёмная тема (для главной страницы)
@@ -226,5 +279,43 @@ function showNotification(message, isError = false) {
     }, 3000);
 }
 
+// Показываем лоадер при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    createLoader();
+    showLoader();
+    
+    // Добавляем обработчики для всех ссылок (кроме якорных)
+    document.querySelectorAll('a:not([href^="#"]):not([href^="javascript"])').forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Не показываем лоадер для ссылок на ту же страницу
+            if (this.hostname === window.location.hostname && 
+                this.pathname === window.location.pathname) {
+                return;
+            }
+            showLoader();
+        });
+    });
+    
+    // Добавляем обработчики для кнопок
+    document.querySelectorAll('.btn, button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.classList.contains('btn-primary') || 
+                this.classList.contains('btn-secondary') ||
+                this.classList.contains('btn-outline')) {
+                // Показываем лоадер для основных действий
+                if (this.textContent.includes('Заказать') || 
+                    this.textContent.includes('Отправить') ||
+                    this.textContent.includes('Сохранить')) {
+                    showLoader();
+                    // Скрываем лоадер через 1 секунду, если нет перенаправления
+                    setTimeout(hideLoader, 1000);
+                }
+            }
+        });
+    });
+});
+
 // Экспортируем функцию для использования в других файлах
 window.showNotification = showNotification;
+window.showLoader = showLoader;
+window.hideLoader = hideLoader;

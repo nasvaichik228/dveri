@@ -3426,3 +3426,389 @@ h2 {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+/* Индикатор загрузки страницы */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .page-loader {
+    background: rgba(18, 18, 18, 0.98);
+}
+
+.page-loader.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.loader-content {
+    text-align: center;
+    animation: loaderFadeIn 0.5s ease;
+}
+
+.loader-spinner {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(45deg, #8B4513, #D2691E);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.5rem;
+    animation: loaderPulse 1.5s ease-in-out infinite;
+    box-shadow: 0 5px 20px rgba(139, 69, 19, 0.3);
+}
+
+.dark-theme .loader-spinner {
+    background: linear-gradient(45deg, #d4a574, #e6c29a);
+    box-shadow: 0 5px 20px rgba(212, 165, 116, 0.3);
+}
+
+.loader-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #8B4513;
+    letter-spacing: 2px;
+    animation: loaderText 1.5s ease-in-out infinite;
+}
+
+.dark-theme .loader-text {
+    color: #d4a574;
+}
+
+@keyframes loaderPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 5px 20px rgba(139, 69, 19, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 10px 30px rgba(139, 69, 19, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 5px 20px rgba(139, 69, 19, 0.3);
+    }
+}
+
+@keyframes loaderText {
+    0% {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+    100% {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+}
+
+@keyframes loaderFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Индикатор загрузки для изображений */
+.image-loader {
+    position: relative;
+    min-height: 100px;
+}
+
+.image-loader::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #8B4513;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.dark-theme .image-loader::before {
+    border-color: #2c2c2c;
+    border-top-color: #d4a574;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Улучшенная анимация для fade-in */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.8s ease-out forwards !important;
+}
+
+/* Улучшенная анимация для карточек */
+.door-card.fade-in,
+.benefit.fade-in,
+.feature.fade-in,
+.service-card.fade-in,
+.portfolio-item.fade-in {
+    opacity: 0;
+}
+
+/* Анимация для иконки корзины */
+@keyframes cartBounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.cart-pulse i {
+    animation: cartBounce 0.3s ease;
+    color: #ff4444;
+}
+
+/* Анимация для кнопки добавления в корзину */
+@keyframes addToCartSuccess {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+        background: #4caf50;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.add-to-cart-success {
+    animation: addToCartSuccess 0.5s ease;
+}
+
+/* Анимация для модальных окон */
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal.active .modal-content {
+    animation: modalSlideIn 0.3s ease;
+}
+
+/* Анимация для уведомлений */
+@keyframes notificationSlide {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.notification {
+    animation: notificationSlide 0.3s ease;
+}
+
+/* Анимация для кнопки "Наверх" */
+@keyframes scrollTopPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.scroll-top.visible {
+    animation: scrollTopPulse 2s infinite;
+}
+
+/* Анимация для фильтров */
+@keyframes filterActive {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.filter-btn.active {
+    animation: filterActive 0.3s ease;
+}
+
+/* Анимация для переключателя темы */
+@keyframes themeSwitch {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.theme-toggle:active i {
+    animation: themeSwitch 0.5s ease;
+}
+
+/* Анимация для хлебных крошек */
+@keyframes breadcrumbsFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.breadcrumbs {
+    animation: breadcrumbsFade 0.5s ease;
+}
+
+/* Улучшенная анимация для ховера карточек */
+.door-card {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.door-card:hover {
+    transform: translateY(-8px);
+}
+
+/* Анимация для цены при изменении */
+@keyframes priceChange {
+    0% {
+        color: #8B4513;
+    }
+    50% {
+        color: #4caf50;
+        transform: scale(1.1);
+    }
+    100% {
+        color: #8B4513;
+        transform: scale(1);
+    }
+}
+
+.door-price,
+.product-price,
+.favorite-card-price,
+.recently-viewed-price {
+    transition: all 0.3s ease;
+}
+
+/* Анимация для счетчика корзины */
+@keyframes countChange {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.cart-count {
+    transition: all 0.3s ease;
+}
+
+.cart-count:not(:empty) {
+    animation: countChange 0.3s ease;
+}
+
+/* Анимация для прогресс-бара доставки */
+@keyframes progressFill {
+    from {
+        width: 0;
+    }
+    to {
+        width: var(--progress-width);
+    }
+}
+
+.delivery-progress {
+    animation: progressFill 1s ease;
+}
+
+/* Анимация для бейджа скидки */
+@keyframes discountPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+}
+
+.discount-badge {
+    animation: discountPulse 2s infinite;
+}
+
+/* Анимация для успешного копирования ссылки */
+@keyframes copySuccess {
+    0% {
+        color: #8B4513;
+    }
+    50% {
+        color: #4caf50;
+        transform: scale(1.2);
+    }
+    100% {
+        color: #8B4513;
+        transform: scale(1);
+    }
+}
+
+#copyLink i.fa-check {
+    animation: copySuccess 0.5s ease;
+}

@@ -3812,3 +3812,326 @@ h2 {
 #copyLink i.fa-check {
     animation: copySuccess 0.5s ease;
 }
+/* Анимация для цен в калькуляторе */
+@keyframes priceChange {
+    0% {
+        transform: scale(1);
+        color: #8B4513;
+    }
+    50% {
+        transform: scale(1.1);
+        color: #4caf50;
+    }
+    100% {
+        transform: scale(1);
+        color: #8B4513;
+    }
+}
+
+.price-changing {
+    animation: priceChange 0.5s ease;
+    display: inline-block;
+}
+
+.dark-theme .price-changing {
+    color: #d4a574 !important;
+}
+
+/* Анимация для бейджа экономии */
+@keyframes economyBadgePulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+}
+
+.economy-badge-animate {
+    animation: economyBadgePulse 0.5s ease;
+}
+
+/* Стили для валидации форм */
+.contact-form input.error,
+.contact-form textarea.error,
+.modal-content input.error,
+.modal-content textarea.error,
+#saveForm input.error,
+#saveForm textarea.error,
+#orderForm input.error,
+#orderForm textarea.error {
+    border-color: #f44336 !important;
+    background-color: rgba(244, 67, 54, 0.05) !important;
+    animation: shake 0.5s ease;
+}
+
+.contact-form input.success,
+.contact-form textarea.success,
+.modal-content input.success,
+.modal-content textarea.success,
+#saveForm input.success,
+#saveForm textarea.success,
+#orderForm input.success,
+#orderForm textarea.success {
+    border-color: #4caf50 !important;
+    background-color: rgba(76, 175, 80, 0.05) !important;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-5px);
+    }
+    40%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Подсказки об ошибках */
+.field-error {
+    color: #f44336;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding-left: 5px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.field-error::before {
+    content: '⚠';
+    font-size: 0.9rem;
+}
+
+.field-error.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dark-theme .field-error {
+    color: #ff8a80;
+}
+
+/* Улучшенные стили для модальных окон */
+.modal {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    opacity: 1;
+}
+
+.modal.active .modal-content {
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация для инпутов при фокусе */
+input:focus,
+textarea:focus,
+select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
+    transition: all 0.3s ease;
+}
+
+.dark-theme input:focus,
+.dark-theme textarea:focus,
+.dark-theme select:focus {
+    box-shadow: 0 4px 12px rgba(212, 165, 116, 0.1);
+}
+
+/* Улучшенные стили для кнопок */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Анимация для количества дверей */
+@keyframes quantityChange {
+    0% {
+        transform: scale(1);
+        background: #f0f0f0;
+    }
+    50% {
+        transform: scale(1.1);
+        background: #8B4513;
+        color: white;
+    }
+    100% {
+        transform: scale(1);
+        background: #f0f0f0;
+    }
+}
+
+.quantity-btn:active {
+    animation: quantityChange 0.3s ease;
+}
+
+.dark-theme .quantity-btn:active {
+    background: #d4a574 !important;
+    color: #121212 !important;
+}
+
+/* Анимация для чекбоксов опций */
+.option-checkbox input:checked + .checkmark {
+    animation: checkboxPop 0.3s ease;
+}
+
+@keyframes checkboxPop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Анимация для радио кнопок */
+.option-card input:checked + .option-content {
+    animation: radioSelect 0.3s ease;
+}
+
+@keyframes radioSelect {
+    0% {
+        transform: scale(1);
+        border-color: #8B4513;
+    }
+    50% {
+        transform: scale(1.05);
+        border-color: #4caf50;
+    }
+    100% {
+        transform: scale(1);
+        border-color: #8B4513;
+    }
+}
+
+/* Анимация для кнопки копирования */
+@keyframes copySuccess {
+    0% {
+        transform: scale(1);
+        color: #8B4513;
+    }
+    50% {
+        transform: scale(1.2);
+        color: #4caf50;
+    }
+    100% {
+        transform: scale(1);
+        color: #8B4513;
+    }
+}
+
+#copyLink i.fa-check {
+    animation: copySuccess 0.5s ease;
+}
+
+/* Анимация для примера расчёта */
+@keyframes exampleLoad {
+    0% {
+        transform: translateY(0);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    50% {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(139, 69, 19, 0.2);
+    }
+    100% {
+        transform: translateY(0);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+}
+
+.example-card .btn-outline:active {
+    animation: exampleLoad 0.5s ease;
+}
+
+/* Анимация для итоговой суммы */
+@keyframes finalPricePulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+        color: #4caf50;
+    }
+    100% {
+        transform: scale(1);
+        color: #8B4513;
+    }
+}
+
+.final-total span:last-child {
+    animation: finalPricePulse 0.5s ease;
+}
+
+/* Улучшенная анимация для размера пресетов */
+.size-preset-active {
+    animation: sizePresetClick 0.3s ease;
+}
+
+@keyframes sizePresetClick {
+    0% {
+        transform: scale(1);
+        background: #f0f0f0;
+    }
+    50% {
+        transform: scale(1.1);
+        background: #8B4513;
+        color: white;
+    }
+    100% {
+        transform: scale(1);
+        background: #f0f0f0;
+    }
+}
+
+.dark-theme .size-preset-active {
+    background: #d4a574 !important;
+    color: #121212 !important;
+}

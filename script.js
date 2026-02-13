@@ -98,11 +98,46 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Добавление класса при скролле для шапки
 window.addEventListener('scroll', function() {
     const header = document.querySelector('.header');
-    if (window.scrollY > 100) {
+    const scrollPosition = window.scrollY;
+    
+    if (scrollPosition > 100) {
         header.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+        header.style.transform = 'translateY(0)';
     } else {
         header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        header.style.transform = 'translateY(0)';
     }
+    
+    // Эффект параллакса для hero-секции (только на главной)
+    if (!isCatalogPage) {
+        const hero = document.querySelector('.hero');
+        const heroContent = document.querySelector('.hero-content');
+        const heroImage = document.querySelector('.hero-image');
+        
+        if (hero && heroContent && heroImage) {
+            // Параллакс для фона
+            const speed = 0.5;
+            const yPos = -(scrollPosition * speed);
+            hero.style.backgroundPosition = `center ${yPos}px`;
+            
+            // Параллакс для контента (элементы движутся с разной скоростью)
+            heroContent.style.transform = `translateY(${scrollPosition * 0.3}px)`;
+            heroImage.style.transform = `translateY(${scrollPosition * 0.2}px)`;
+        }
+    }
+    
+    // Анимация прогресс-бара чтения
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    
+    let readingProgress = document.querySelector('.reading-progress');
+    if (!readingProgress) {
+        readingProgress = document.createElement('div');
+        readingProgress.className = 'reading-progress';
+        document.body.appendChild(readingProgress);
+    }
+    readingProgress.style.width = scrolled + '%';
 });
 
 // Имитация загрузки "наших работ"
@@ -119,7 +154,42 @@ document.addEventListener('DOMContentLoaded', function() {
             element.textContent = portfolioItems[index].title;
         }
     });
+    
+    // Инициализация параллакса для всех секций
+    initScrollAnimations();
 });
+
+// Инициализация анимаций при скролле
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.feature, .service-card, .portfolio-item, .door-card, .benefit, .example-card, .catalog-info, .contact-content');
+    
+    // Добавляем класс fade-out изначально
+    animatedElements.forEach(element => {
+        element.classList.add('fade-out');
+    });
+    
+    // Функция проверки видимости элемента
+    function checkVisibility() {
+        animatedElements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight - 100;
+            
+            if (elementPosition < screenPosition) {
+                element.classList.add('fade-in');
+                element.classList.remove('fade-out');
+            } else {
+                element.classList.remove('fade-in');
+                element.classList.add('fade-out');
+            }
+        });
+    }
+    
+    // Проверяем при скролле
+    window.addEventListener('scroll', checkVisibility);
+    
+    // Проверяем сразу после загрузки
+    checkVisibility();
+}
 
 // Кнопка "Наверх"
 const scrollTopBtn = document.getElementById('scrollTop');
@@ -131,18 +201,6 @@ window.addEventListener('scroll', function() {
     } else {
         scrollTopBtn.classList.remove('visible');
     }
-    
-    // Анимация появления элементов при скролле
-    const animatedElements = document.querySelectorAll('.feature, .service-card, .portfolio-item, .door-card, .benefit');
-    
-    animatedElements.forEach(element => {
-        const elementPosition = element.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.2;
-        
-        if (elementPosition < screenPosition) {
-            element.classList.add('fade-in');
-        }
-    });
 });
 
 // Прокрутка наверх
@@ -158,19 +216,47 @@ window.addEventListener('load', function() {
     const heroContent = document.querySelector('.hero-content');
     const heroImage = document.querySelector('.hero-image');
     
-    setTimeout(() => {
-        heroContent.style.opacity = '1';
-        heroContent.style.transform = 'translateY(0)';
-    }, 300);
-    
-    setTimeout(() => {
-        heroImage.style.opacity = '1';
-        heroImage.style.transform = 'translateY(0)';
-    }, 600);
+    if (heroContent && heroImage) {
+        setTimeout(() => {
+            heroContent.style.opacity = '1';
+            heroContent.style.transform = 'translateY(0)';
+        }, 300);
+        
+        setTimeout(() => {
+            heroImage.style.opacity = '1';
+            heroImage.style.transform = 'translateY(0)';
+        }, 600);
+    }
     
     // Скрываем лоадер при полной загрузке
     hideLoader();
+    
+    // Добавляем эффект градиента при движении мыши (только на главной)
+    if (!isCatalogPage) {
+        initMouseParallax();
+    }
 });
+
+// Эффект параллакса при движении мыши
+function initMouseParallax() {
+    const hero = document.querySelector('.hero');
+    const doorPlaceholder = document.querySelector('.door-placeholder');
+    
+    if (!hero || !doorPlaceholder) return;
+    
+    document.addEventListener('mousemove', function(e) {
+        const mouseX = e.clientX / window.innerWidth - 0.5;
+        const mouseY = e.clientY / window.innerHeight - 0.5;
+        
+        // Дверь слегка двигается за мышью
+        doorPlaceholder.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+        
+        // Градиент фона меняется в зависимости от положения мыши
+        const gradientX = 50 + mouseX * 20;
+        const gradientY = 50 + mouseY * 20;
+        hero.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, #f5f1eb, #e8dfd3)`;
+    });
+}
 
 // Тёмная тема (для главной страницы)
 if (!isCatalogPage) {
@@ -192,6 +278,12 @@ if (!isCatalogPage) {
         } else {
             localStorage.setItem('theme', 'light');
         }
+        
+        // Анимация переключения
+        document.documentElement.style.transition = 'background-color 0.3s ease';
+        setTimeout(() => {
+            document.documentElement.style.transition = '';
+        }, 300);
     });
 
     // Проверяем системные настройки (опционально)
@@ -313,7 +405,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Добавляем эффект свечения для активных элементов
+    addGlowEffect();
 });
+
+// Эффект свечения для интерактивных элементов
+function addGlowEffect() {
+    const interactiveElements = document.querySelectorAll('.btn, .door-card, .filter-btn, .size-preset, .option-card');
+    
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            this.style.transition = 'all 0.3s ease';
+        });
+        
+        element.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            this.style.setProperty('--mouse-x', `${x}px`);
+            this.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+}
 
 // Экспортируем функцию для использования в других файлах
 window.showNotification = showNotification;

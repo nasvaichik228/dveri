@@ -4135,3 +4135,526 @@ select:focus {
     background: #d4a574 !important;
     color: #121212 !important;
 }
+/* Прогресс-бар чтения */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #8B4513, #D2691E, #8B4513);
+    z-index: 1001;
+    transition: width 0.1s ease;
+    box-shadow: 0 2px 10px rgba(139, 69, 19, 0.3);
+}
+
+.dark-theme .reading-progress {
+    background: linear-gradient(90deg, #d4a574, #e6c29a, #d4a574);
+}
+
+/* Эффект параллакса для hero-секции */
+.hero {
+    position: relative;
+    overflow: hidden;
+    transition: background 0.1s ease;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+    pointer-events: none;
+}
+
+.dark-theme .hero::before {
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.1s ease, opacity 0.8s ease;
+}
+
+.hero-image {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.1s ease, opacity 0.8s ease;
+}
+
+/* Эффект свечения при наведении */
+.door-card,
+.btn,
+.filter-btn,
+.size-preset,
+.option-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.door-card::before,
+.btn::before,
+.filter-btn::before,
+.size-preset::before,
+.option-card::before {
+    content: '';
+    position: absolute;
+    top: var(--mouse-y, 50%);
+    left: var(--mouse-x, 50%);
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(139, 69, 19, 0.2), transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.dark-theme .door-card::before,
+.dark-theme .btn::before,
+.dark-theme .filter-btn::before,
+.dark-theme .size-preset::before,
+.dark-theme .option-card::before {
+    background: radial-gradient(circle at center, rgba(212, 165, 116, 0.2), transparent 70%);
+}
+
+.door-card:hover::before,
+.btn:hover::before,
+.filter-btn:hover::before,
+.size-preset:hover::before,
+.option-card:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Улучшенные анимации при скролле */
+.fade-out {
+    opacity: 0.5;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Анимация для карточек при скролле */
+.feature,
+.service-card,
+.portfolio-item,
+.door-card,
+.benefit,
+.example-card,
+.catalog-info,
+.contact-content {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Эффект параллакса для фона */
+.hero {
+    background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        background-attachment: scroll;
+    }
+}
+
+/* Анимация для секций */
+section {
+    position: relative;
+    overflow: hidden;
+}
+
+section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #8B4513, transparent);
+    opacity: 0.3;
+}
+
+/* Анимация для заголовков */
+h1, h2, h3 {
+    position: relative;
+    display: inline-block;
+}
+
+h1::after,
+h2::after,
+h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #8B4513, transparent);
+    transition: width 0.6s ease;
+}
+
+section:hover h1::after,
+section:hover h2::after,
+section:hover h3::after {
+    width: 100px;
+}
+
+/* Анимация для хлебных крошек */
+.breadcrumbs {
+    position: relative;
+    overflow: hidden;
+}
+
+.breadcrumbs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        left: 100%;
+    }
+}
+
+/* Улучшенная анимация для кнопки "Наверх" */
+.scroll-top {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-top.visible {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Анимация для социальных иконок */
+.social-links a {
+    position: relative;
+    overflow: hidden;
+}
+
+.social-links a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(139, 69, 19, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.social-links a:hover::before {
+    width: 100%;
+    height: 100%;
+}
+
+/* Анимация для футера */
+.footer {
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05), transparent 70%);
+    animation: rotateSlow 30s linear infinite;
+}
+
+@keyframes rotateSlow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Анимация для логотипа */
+.logo {
+    position: relative;
+    overflow: hidden;
+}
+
+.logo i {
+    transition: transform 0.3s ease;
+}
+
+.logo:hover i {
+    transform: rotate(15deg) scale(1.1);
+}
+
+/* Анимация для навигационных ссылок */
+.nav-links a {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: #8B4513;
+    transition: left 0.3s ease;
+}
+
+.nav-links a:hover::before {
+    left: 0;
+}
+
+.dark-theme .nav-links a::before {
+    background: #d4a574;
+}
+
+/* Анимация для телефона */
+.phone {
+    position: relative;
+    overflow: hidden;
+}
+
+.phone i {
+    animation: phoneRing 2s infinite;
+}
+
+@keyframes phoneRing {
+    0%, 100% {
+        transform: rotate(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotate(15deg);
+    }
+    20%, 40%, 60%, 80% {
+        transform: rotate(-15deg);
+    }
+}
+
+/* Анимация для переключателя темы */
+.theme-toggle {
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(180deg);
+}
+
+/* Анимация для изображений */
+.door-image,
+.product-image,
+.quick-view-image,
+.portfolio-img {
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.door-image::before,
+.product-image::before,
+.quick-view-image::before,
+.portfolio-img::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+    }
+}
+
+/* Анимация для цен */
+.door-price,
+.product-price,
+.favorite-card-price,
+.recently-viewed-price {
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.door-price:hover,
+.product-price:hover,
+.favorite-card-price:hover,
+.recently-viewed-price:hover {
+    transform: scale(1.1);
+    color: #4caf50;
+}
+
+/* Анимация для счетчиков */
+.cart-count,
+.favorites-count-badge {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cart-icon:hover .cart-count,
+.favorites-link:hover .favorites-count-badge {
+    transform: scale(1.2);
+}
+
+/* Анимация для выпадающей корзины */
+.cart-dropdown {
+    transform-origin: top right;
+    animation: dropdownFade 0.3s ease;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Анимация для модальных окон */
+.modal-content {
+    transform-origin: center;
+    animation: modalPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Анимация для уведомлений */
+.notification {
+    transform-origin: right;
+    animation: notificationSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes notificationSlide {
+    from {
+        opacity: 0;
+        transform: translateX(30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Анимация для фильтров */
+.filter-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    animation: activePulse 2s infinite;
+}
+
+@keyframes activePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(139, 69, 19, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(139, 69, 19, 0);
+    }
+}
+
+/* Анимация для сортировки */
+.sort select {
+    transition: all 0.3s ease;
+}
+
+.sort select:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Анимация для преимуществ */
+.benefit {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.benefit:hover {
+    transform: translateY(-10px) scale(1.02);
+}
+
+.benefit i {
+    transition: all 0.3s ease;
+}
+
+.benefit:hover i {
+    transform: scale(1.2) rotate(360deg);
+}
+
+/* Анимация для пустого состояния */
+.empty-cart,
+.empty-favorites .empty-state {
+    animation: emptyPulse 2s infinite;
+}
+
+@keyframes emptyPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}

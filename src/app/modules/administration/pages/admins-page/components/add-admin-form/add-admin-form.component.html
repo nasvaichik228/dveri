@@ -1,0 +1,24 @@
+<header>Добавить админа</header>
+<main>
+  <form [formGroup]='addAdminForm' (ngSubmit)='addNewAdmin()'>
+    <div>
+      <input type='text' placeholder='Имя' formControlName='admin_login' [ngClass]="{ invalid: getFieldErrors('admin_login') }" />
+      <div *ngIf="getFieldErrors('admin_login')">
+        <small *ngIf="getFieldErrors('admin_login')?.['required']">Имя обязательно<br></small>
+        <small *ngIf="getFieldErrors('admin_login')?.['minlength']">Имя должно быть не менее 2 символов<br></small>
+      </div>
+    </div>
+    <div>
+      <input type='text' placeholder='Пароль' formControlName='admin_password' [ngClass]="{ invalid: getFieldErrors('admin_password') }" />
+      <div *ngIf="getFieldErrors('admin_password')">
+        <small *ngIf="getFieldErrors('admin_password')?.['required']">Пароль обязателен</small>
+        <small *ngIf="getFieldErrors('admin_password')?.['minlength']">Пароль должен составлять минимум 6 символов<br></small>
+      </div>
+    </div>
+    <label>
+      <input type="checkbox" formControlName="is_active_admin">
+      Активен
+    </label>
+    <button type='submit' [disabled]='addAdminForm.invalid'>Добавить</button>
+  </form>
+</main>
